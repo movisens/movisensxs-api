@@ -1,4 +1,4 @@
-# movisensXS API for Java
+movisensXS API for Java
 ============
 <a href="https://jitpack.io/#movisens/movisensxs-api/"><img src="https://img.shields.io/github/tag/movisens/movisensxs-api.svg?label=Maven on JitPack" /></a>
 
