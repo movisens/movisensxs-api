@@ -9,8 +9,16 @@ import retrofit.http.Path;
 import com.google.gson.JsonElement;
 import com.movisens.xs.api.models.Proband;
 import com.movisens.xs.api.models.Result;
+import com.movisens.xs.api.models.Study;
 
 public interface XSService {
+	@GET("/studies/{studyId}")
+	Study getStudy(@Path("studyId") Integer studyId);
+
+	@GET("/studies/{studyId}")
+	void getStudy(@Path("studyId") Integer studyId,
+			Callback<List<Study>> cb);
+	
 	@GET("/studies/{studyId}/probands")
 	List<Proband> getProbands(@Path("studyId") Integer studyId);
 
