@@ -20,7 +20,7 @@ public interface XSService {
 	Study getStudy(@Path("studyId") Integer studyId) throws MovisensXSException;
 
 	@GET("/studies/{studyId}")
-	void getStudy(@Path("studyId") Integer studyId, Callback<List<Study>> cb);
+	void getStudy(@Path("studyId") Integer studyId, Callback<Study> cb);
 
 	@GET("/studies/{studyId}/probands")
 	List<Proband> getProbands(@Path("studyId") Integer studyId)
@@ -43,7 +43,7 @@ public interface XSService {
 
 	@GET("/studies/{studyId}/results")
 	void getResultsAsJson(@Path("studyId") Integer studyId,
-			Callback<List<JsonElement>> cb);
+			Callback<JsonElement> cb);
 
 	@GET("/studies/{studyId}/probands/{probandId}/messages")
 	List<Message> getMessages(@Path("studyId") Integer studyId,

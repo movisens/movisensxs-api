@@ -15,13 +15,13 @@ repositories {
     maven { url "https://jitpack.io" }
 }
 dependencies {
-    compile 'com.github.movisens:movisensxs-api:0.3'
+    compile 'com.github.movisens:movisensxs-api:0.4'
 }
 ```
 #### SBT ####
 ```sbt
 resolvers += "jitpack" at "https://jitpack.io"
-libraryDependencies += "com.github.movisens" % "movisensxs-api" % "0.3"
+libraryDependencies += "com.github.movisens" % "movisensxs-api" % "0.4"
 ```
 #### Maven ####
 ```maven
@@ -32,7 +32,7 @@ libraryDependencies += "com.github.movisens" % "movisensxs-api" % "0.3"
 <dependency>
     <groupId>com.github.movisens</groupId>
     <artifactId>movisensxs-api</artifactId>
-    <version>0.3</version>
+    <version>0.4</version>
 </dependency>
 ```
 ### Example Usage ###
@@ -66,7 +66,7 @@ service.getProbands(989, new Callback<List<Proband>>() {
 
 If there is an unsuccessful response then an MovisensXSException or a subclass of MovisensXSException will be thrown.
 
-The API throws the following runtime exceptions:
+The API throws the following exceptions:
 
   - AuthorizationException: for a 401 or 403 response 
   - NotFoundException: for a 404 response 

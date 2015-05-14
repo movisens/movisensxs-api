@@ -4,7 +4,7 @@ import retrofit.RetrofitError;
 
 import com.movisens.xs.api.models.ApiError;
 
-public class MovisensXSException extends RuntimeException {
+public class MovisensXSException extends Exception {
 
 	private static final long serialVersionUID = 1359714572930063286L;
 
