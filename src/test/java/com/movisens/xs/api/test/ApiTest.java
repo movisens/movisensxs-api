@@ -5,6 +5,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -12,15 +13,17 @@ import java.util.concurrent.Callable;
 import org.junit.Test;
 
 import retrofit.Callback;
-import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
-import com.movisens.xs.api.AuthRequestInterceptor;
+import com.movisens.xs.api.XSApi;
 import com.movisens.xs.api.XSService;
+import com.movisens.xs.api.exceptions.AuthorizationException;
+import com.movisens.xs.api.exceptions.MovisensXSException;
+import com.movisens.xs.api.models.Message;
 import com.movisens.xs.api.models.Proband;
 import com.movisens.xs.api.models.Result;
 import com.movisens.xs.api.models.Study;
@@ -32,26 +35,36 @@ import com.movisens.xs.api.models.Study;
  * @author Juergen, @date 22.06.14 22:50
  */
 public class ApiTest {
-	private static final String API_URL = "https://hoc-hc013.hoc.uni-karlsruhe.de/api/v2";
-
-	AuthRequestInterceptor authRequestInterceptor = new AuthRequestInterceptor(
-			"e4prtw8zcmw3a4evuesyjvzmfdfop25hl9zq9h2p");
-
-	XSService service = new RestAdapter.Builder()
-			.setRequestInterceptor(authRequestInterceptor)
-			.setLogLevel(RestAdapter.LogLevel.FULL).setEndpoint(API_URL)
+	private static final String SERVER_URL = "https://hoc-hc013.hoc.uni-karlsruhe.de";
+	private static final String API_KEY = "e4prtw8zcmw3a4evuesyjvzmfdfop25hl9zq9h2p";
+	
+	XSService service = new XSApi.Builder(API_KEY).setServer(SERVER_URL)
 			.build().create(XSService.class);
 
 	@Test
-	public void testGetStudy() {
+	public void testGetMessages() throws AuthorizationException, IOException, MovisensXSException {
+		List<Message> messages = service.getMessages(989, 3);
+		assertEquals("getMessages should return list with first message text is 'test'", "test", messages.get(0).getMessage());
+	}
+	
+	@Test
+	public void testSendMessage() throws AuthorizationException, IOException, MovisensXSException {
+		int nrOfMessages = service.getMessages(989, 3).size();
+		Message message = service.sendMessage(989, 3, "Juergen.Stumpp@gmail.com", "Unit Test");
+		int nrOfMessagesAfterSending = service.getMessages(989, 3).size();
+		assertEquals("getMessages should return one more message after sending", 1, nrOfMessagesAfterSending - nrOfMessages);
+		assertEquals("sendMessage should return one message with the text text 'Unit Test'", "Unit Test", message.getMessage());
+	}
+	
+	@Test
+	public void testGetStudy() throws AuthorizationException, IOException, MovisensXSException {
 		Study study = service.getStudy(989);
 		assertEquals("getStudy should return study with id 989", 989L, study.getId());
-		assertEquals("getStudy should return study which is not deleted", false, study.getDeleted());
-		assertEquals("getStudy should return study which name is 'Alarmtest", "Alarmtest", study.getName());
+		assertEquals("getStudy should return study which name is 'UnitTest", "UnitTest", study.getName());
 	}
 
 	@Test
-	public void testGetProbands() {
+	public void testGetProbands() throws AuthorizationException, IOException, MovisensXSException {
 		List<Proband> probands = service.getProbands(989);
 		assertEquals("getProbands should return 3 result", 3, probands.size());
 		assertEquals("getProbands user 0 should have status 'finished'",
@@ -85,13 +98,13 @@ public class ApiTest {
 	}
 
 	@Test
-	public void testGetResults() {
+	public void testGetResults() throws AuthorizationException, IOException, MovisensXSException {
 		List<Result> results = service.getResults(989);
 		assertEquals("getResults should return 40 results", 40, results.size());
 	}
 
 	@Test
-	public void testGetResultsAsJson() {
+	public void testGetResultsAsJson() throws AuthorizationException, IOException, MovisensXSException {
 		JsonElement jsonResults = service.getResultsAsJson(989);
 
 		Gson gson = new Gson();

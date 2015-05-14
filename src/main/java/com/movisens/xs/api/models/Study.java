@@ -11,8 +11,6 @@ public class Study {
 	private long id;
 	@Expose
 	private String name;
-	@Expose
-	private boolean deleted;
 
 	/**
 	 * 
@@ -46,23 +44,6 @@ public class Study {
 	 */
 	public void setName(String name) {
 		this.name = name;
-	}
-
-	/**
-	 * 
-	 * @return The deleted
-	 */
-	public boolean getDeleted() {
-		return deleted;
-	}
-
-	/**
-	 * 
-	 * @param deleted
-	 *            The deleted
-	 */
-	public void setDeleted(boolean deleted) {
-		this.deleted = deleted;
 	}
 
 }

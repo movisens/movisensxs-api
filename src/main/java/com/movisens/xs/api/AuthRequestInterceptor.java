@@ -17,5 +17,7 @@ public class AuthRequestInterceptor implements RequestInterceptor {
 	@Override
 	public void intercept(RequestFacade requestFacade) {
 		requestFacade.addHeader("Authorization", authorizationValue);
+		requestFacade.addHeader("User-Agent", "movisensXS Java API");
+		requestFacade.addHeader("Accept", "application/json");
 	}
 }

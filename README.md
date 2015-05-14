@@ -15,13 +15,13 @@ repositories {
     maven { url "https://jitpack.io" }
 }
 dependencies {
-    compile 'com.github.movisens:movisensxs-api:0.2'
+    compile 'com.github.movisens:movisensxs-api:0.3'
 }
 ```
 #### SBT ####
 ```sbt
 resolvers += "jitpack" at "https://jitpack.io"
-libraryDependencies += "com.github.movisens" % "movisensxs-api" % "0.2"
+libraryDependencies += "com.github.movisens" % "movisensxs-api" % "0.3"
 ```
 #### Maven ####
 ```maven
@@ -32,20 +32,18 @@ libraryDependencies += "com.github.movisens" % "movisensxs-api" % "0.2"
 <dependency>
     <groupId>com.github.movisens</groupId>
     <artifactId>movisensxs-api</artifactId>
-    <version>0.2</version>
+    <version>0.3</version>
 </dependency>
 ```
 ### Example Usage ###
 ```java
 
 // Create movisensXS Service
-String API_URL = "https://xs.movisens.com/api/v2";
-AuthRequestInterceptor authRequestInterceptor = new AuthRequestInterceptor("API KEY HERE"); // Add your API Key here
-
-XSService service = new RestAdapter.Builder()
-  .setRequestInterceptor(authRequestInterceptor)
-  .setLogLevel(RestAdapter.LogLevel.FULL).setEndpoint(API_URL)
-  .build().create(XSService.class);
+String SERVER_URL = "https://xs.movisens.com";
+String API_KEY = "API KEY HERE";
+	
+XSService service = new XSApi.Builder(API_KEY).setServer(SERVER_URL)
+			.build().create(XSService.class);
 
 // Call API synchronous
 List<Proband> probands = service.getProbands(989);
@@ -63,6 +61,19 @@ service.getProbands(989, new Callback<List<Proband>>() {
 	}
 });
 ```
+
+### Error handling ###
+
+If there is an unsuccessful response then an MovisensXSException or a subclass of MovisensXSException will be thrown.
+
+The API throws the following runtime exceptions:
+
+  - AuthorizationException: for a 401 or 403 response 
+  - NotFoundException: for a 404 response 
+  - ServerException: for a 500 or 503 response
+  - NetworkIOException: for network problems
+  - MovisensXSException: general exception 
+
 ### License ###
 Copyright 2015 movisens GmbH
 
