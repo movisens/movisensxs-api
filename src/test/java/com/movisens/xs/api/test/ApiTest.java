@@ -37,36 +37,37 @@ import com.movisens.xs.api.models.Study;
 public class ApiTest {
 	private static final String SERVER_URL = "https://hoc-hc013.hoc.uni-karlsruhe.de";
 	private static final String API_KEY = "e4prtw8zcmw3a4evuesyjvzmfdfop25hl9zq9h2p";
+	private static final Integer STUDY_ID = 989;
 	
 	XSService service = new XSApi.Builder(API_KEY).setServer(SERVER_URL)
 			.build().create(XSService.class);
 
 	@Test
 	public void testGetMessages() throws AuthorizationException, IOException, MovisensXSException {
-		List<Message> messages = service.getMessages(989, 3);
+		List<Message> messages = service.getMessages(STUDY_ID, 3);
 		assertEquals("getMessages should return list with first message text is 'test'", "test", messages.get(0).getMessage());
 	}
 	
 	@Test
 	public void testSendMessage() throws AuthorizationException, IOException, MovisensXSException {
-		int nrOfMessages = service.getMessages(989, 3).size();
-		Message message = service.sendMessage(989, 3, "Juergen.Stumpp@gmail.com", "Unit Test");
-		int nrOfMessagesAfterSending = service.getMessages(989, 3).size();
+		int nrOfMessages = service.getMessages(STUDY_ID, 3).size();
+		Message message = service.sendMessage(STUDY_ID, 3, "Juergen.Stumpp@gmail.com", "Unit Test");
+		int nrOfMessagesAfterSending = service.getMessages(STUDY_ID, 3).size();
 		assertEquals("getMessages should return one more message after sending", 1, nrOfMessagesAfterSending - nrOfMessages);
 		assertEquals("sendMessage should return one message with the text text 'Unit Test'", "Unit Test", message.getMessage());
 	}
 	
 	@Test
 	public void testGetStudy() throws AuthorizationException, IOException, MovisensXSException {
-		Study study = service.getStudy(989);
-		assertEquals("getStudy should return study with id 989", 989L, study.getId());
+		Study study = service.getStudy(STUDY_ID);
+		assertEquals("getStudy should return study with id STUDY_ID", (long)STUDY_ID, study.getId());
 		assertEquals("getStudy should return study which name is 'UnitTest", "UnitTest", study.getName());
 	}
 
 	@Test
 	public void testGetProbands() throws AuthorizationException, IOException, MovisensXSException {
-		List<Proband> probands = service.getProbands(989);
-		assertEquals("getProbands should return 3 result", 3, probands.size());
+		List<Proband> probands = service.getProbands(STUDY_ID);
+		assertEquals("getProbands should return 4 result", 4, probands.size());
 		assertEquals("getProbands user 0 should have status 'finished'",
 				"finished", probands.get(0).getStatus());
 	}
@@ -75,7 +76,7 @@ public class ApiTest {
 
 	@Test
 	public void testGetProbandsAsync() {
-		service.getProbands(989, new Callback<List<Proband>>() {
+		service.getProbands(STUDY_ID, new Callback<List<Proband>>() {
 			@Override
 			public void success(List<Proband> probands, Response response) {
 				asyncProbands = probands;
@@ -91,7 +92,7 @@ public class ApiTest {
 				return asyncProbands != null;
 			}
 		});
-		assertEquals("getProbands should return 3 result", 3,
+		assertEquals("getProbands should return 4 result", 4,
 				asyncProbands.size());
 		assertEquals("getProbands user 0 should have status 'finished'",
 				"finished", asyncProbands.get(0).getStatus());
@@ -99,20 +100,20 @@ public class ApiTest {
 
 	@Test
 	public void testGetResults() throws AuthorizationException, IOException, MovisensXSException {
-		List<Result> results = service.getResults(989);
-		assertEquals("getResults should return 40 results", 40, results.size());
+		List<Result> results = service.getResults(STUDY_ID);
+		assertEquals("getResults should return 46 results", 46, results.size());
 	}
 
 	@Test
 	public void testGetResultsAsJson() throws AuthorizationException, IOException, MovisensXSException {
-		JsonElement jsonResults = service.getResultsAsJson(989);
+		JsonElement jsonResults = service.getResultsAsJson(STUDY_ID);
 
 		Gson gson = new Gson();
 		Type collectionType = new TypeToken<List<MyResult>>() {
 		}.getType();
 		List<MyResult> results = gson.fromJson(jsonResults, collectionType);
 
-		assertEquals("getResults should return 40 results", 40, results.size());
+		assertEquals("getResults should return 46 results", 46, results.size());
 		assertEquals("getResults first result should have item_65_2 set to 1",
 				1, results.get(0).item_65_2);
 	}
@@ -121,7 +122,7 @@ public class ApiTest {
 
 	@Test
 	public void testGetResultsAsync() {
-		service.getResults(989, new Callback<List<Result>>() {
+		service.getResults(STUDY_ID, new Callback<List<Result>>() {
 			@Override
 			public void success(List<Result> results, Response response) {
 				asyncResults = results;
@@ -137,7 +138,7 @@ public class ApiTest {
 				return asyncResults != null;
 			}
 		});
-		assertEquals("getResults should return 40 results", 40,
+		assertEquals("getResults should return 46 results", 46,
 				asyncResults.size());
 	}
 }

@@ -29,10 +29,12 @@ public class XSApiErrorHandler implements ErrorHandler {
 		}
 		if (r != null) {
 			int responseCode = r.getStatus();
-			ApiError apiError = new ApiError("unknown","unknown");
+			ApiError apiError = new ApiError("unknown", "unknown");
 			try {
-				String text = fromStream(r.getBody().in());
-				apiError = ApiError.parse(text);
+				if (r.getBody() != null) {
+					String text = fromStream(r.getBody().in());
+					apiError = ApiError.parse(text);
+				}
 			} catch (JsonParseException e) {
 			} catch (IOException e) {
 			}
@@ -45,7 +47,8 @@ public class XSApiErrorHandler implements ErrorHandler {
 				try {
 					String text = fromStream(r.getBody().in());
 					serverError = ServerError.parse(text);
-					apiError = new ApiError(serverError.type, serverError.message);
+					apiError = new ApiError(serverError.type,
+							serverError.message);
 				} catch (JsonParseException e) {
 				} catch (IOException e) {
 				}
