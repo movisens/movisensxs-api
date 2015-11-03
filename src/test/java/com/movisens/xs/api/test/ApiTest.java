@@ -12,9 +12,10 @@ import java.util.concurrent.Callable;
 
 import org.junit.Test;
 
+import retrofit.Call;
 import retrofit.Callback;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
@@ -38,53 +39,62 @@ public class ApiTest {
 	private static final String SERVER_URL = "https://hoc-hc013.hoc.uni-karlsruhe.de";
 	private static final String API_KEY = "e4prtw8zcmw3a4evuesyjvzmfdfop25hl9zq9h2p";
 	private static final Integer STUDY_ID = 989;
-	
-	XSService service = new XSApi.Builder(API_KEY).setServer(SERVER_URL)
-			.build().create(XSService.class);
+
+	XSService service = new XSApi.Builder(API_KEY).setServer(SERVER_URL).build().create(XSService.class);
 
 	@Test
 	public void testGetMessages() throws AuthorizationException, IOException, MovisensXSException {
-		List<Message> messages = service.getMessages(STUDY_ID, 3);
-		assertEquals("getMessages should return list with first message text is 'test'", "test", messages.get(0).getMessage());
+		Call<List<Message>> call = service.getMessages(STUDY_ID, 3);
+		List<Message> messages = call.execute().body();
+		assertEquals("getMessages should return list with first message text is 'test'", "test",
+				messages.get(0).getMessage());
 	}
-	
+
 	@Test
 	public void testSendMessage() throws AuthorizationException, IOException, MovisensXSException {
-		int nrOfMessages = service.getMessages(STUDY_ID, 3).size();
-		Message message = service.sendMessage(STUDY_ID, 3, "Juergen.Stumpp@gmail.com", "Unit Test");
-		int nrOfMessagesAfterSending = service.getMessages(STUDY_ID, 3).size();
-		assertEquals("getMessages should return one more message after sending", 1, nrOfMessagesAfterSending - nrOfMessages);
-		assertEquals("sendMessage should return one message with the text text 'Unit Test'", "Unit Test", message.getMessage());
+		Call<List<Message>> call = service.getMessages(STUDY_ID, 3);
+		int nrOfMessages = call.execute().body().size();
+		Call<Message> sendMessageCall = service.sendMessage(STUDY_ID, 3, "Juergen.Stumpp@gmail.com", "Unit Test");
+		Message message = sendMessageCall.execute().body();
+		call = service.getMessages(STUDY_ID, 3);
+		int nrOfMessagesAfterSending = call.execute().body().size();
+		assertEquals("getMessages should return one more message after sending", 1,
+				nrOfMessagesAfterSending - nrOfMessages);
+		assertEquals("sendMessage should return one message with the text text 'Unit Test'", "Unit Test",
+				message.getMessage());
 	}
-	
+
 	@Test
 	public void testGetStudy() throws AuthorizationException, IOException, MovisensXSException {
-		Study study = service.getStudy(STUDY_ID);
-		assertEquals("getStudy should return study with id STUDY_ID", (long)STUDY_ID, study.getId());
+		Study study = service.getStudy(STUDY_ID).execute().body();
+		assertEquals("getStudy should return study with id STUDY_ID", (long) STUDY_ID, study.getId());
 		assertEquals("getStudy should return study which name is 'UnitTest", "UnitTest", study.getName());
 	}
 
 	@Test
 	public void testGetProbands() throws AuthorizationException, IOException, MovisensXSException {
-		List<Proband> probands = service.getProbands(STUDY_ID);
+		List<Proband> probands = service.getProbands(STUDY_ID).execute().body();
 		assertEquals("getProbands should return 4 result", 4, probands.size());
-		assertEquals("getProbands user 0 should have status 'finished'",
-				"finished", probands.get(0).getStatus());
+		assertEquals("getProbands user 0 should have status 'finished'", "finished", probands.get(0).getStatus());
 	}
 
 	private List<Proband> asyncProbands = null;
 
 	@Test
-	public void testGetProbandsAsync() {
-		service.getProbands(STUDY_ID, new Callback<List<Proband>>() {
+	public void testGetProbandsAsync() throws MovisensXSException {
+		Call<List<Proband>> call = service.getProbands(STUDY_ID);
+		call.enqueue(new Callback<List<Proband>>() {
+
 			@Override
-			public void success(List<Proband> probands, Response response) {
-				asyncProbands = probands;
+			public void onResponse(Response<List<Proband>> response, Retrofit retrofit) {
+				asyncProbands = response.body();
+
 			}
 
 			@Override
-			public void failure(RetrofitError error) {
-				fail("Error receiving probands: " + error.getMessage());
+			public void onFailure(Throwable t) {
+				fail("Error receiving probands: " + t.getMessage());
+
 			}
 		});
 		await().atMost(5, SECONDS).until(new Callable<Boolean>() {
@@ -92,21 +102,19 @@ public class ApiTest {
 				return asyncProbands != null;
 			}
 		});
-		assertEquals("getProbands should return 4 result", 4,
-				asyncProbands.size());
-		assertEquals("getProbands user 0 should have status 'finished'",
-				"finished", asyncProbands.get(0).getStatus());
+		assertEquals("getProbands should return 4 result", 4, asyncProbands.size());
+		assertEquals("getProbands user 0 should have status 'finished'", "finished", asyncProbands.get(0).getStatus());
 	}
 
 	@Test
 	public void testGetResults() throws AuthorizationException, IOException, MovisensXSException {
-		List<Result> results = service.getResults(STUDY_ID);
+		List<Result> results = service.getResults(STUDY_ID).execute().body();
 		assertEquals("getResults should return 46 results", 46, results.size());
 	}
 
 	@Test
 	public void testGetResultsAsJson() throws AuthorizationException, IOException, MovisensXSException {
-		JsonElement jsonResults = service.getResultsAsJson(STUDY_ID);
+		JsonElement jsonResults = service.getResultsAsJson(STUDY_ID).execute().body();
 
 		Gson gson = new Gson();
 		Type collectionType = new TypeToken<List<MyResult>>() {
@@ -114,31 +122,32 @@ public class ApiTest {
 		List<MyResult> results = gson.fromJson(jsonResults, collectionType);
 
 		assertEquals("getResults should return 46 results", 46, results.size());
-		assertEquals("getResults first result should have item_65_2 set to 1",
-				1, results.get(0).item_65_2);
+		assertEquals("getResults first result should have item_65_2 set to 1", 1, results.get(0).item_65_2);
 	}
 
 	private List<Result> asyncResults = null;
 
 	@Test
-	public void testGetResultsAsync() {
-		service.getResults(STUDY_ID, new Callback<List<Result>>() {
+	public void testGetResultsAsync() throws MovisensXSException {
+		Call<List<Result>> call = service.getResults(STUDY_ID);
+		call.enqueue(new Callback<List<Result>>() {
+
 			@Override
-			public void success(List<Result> results, Response response) {
-				asyncResults = results;
+			public void onResponse(Response<List<Result>> response, Retrofit retrofit) {
+				asyncResults = response.body();
 			}
 
 			@Override
-			public void failure(RetrofitError error) {
-				fail("Error receiving results: " + error.getMessage());
+			public void onFailure(Throwable t) {
+				fail("Error receiving results: " + t.getMessage());
 			}
 		});
+
 		await().atMost(5, SECONDS).until(new Callable<Boolean>() {
 			public Boolean call() throws Exception {
 				return asyncResults != null;
 			}
 		});
-		assertEquals("getResults should return 46 results", 46,
-				asyncResults.size());
+		assertEquals("getResults should return 46 results", 46, asyncResults.size());
 	}
 }

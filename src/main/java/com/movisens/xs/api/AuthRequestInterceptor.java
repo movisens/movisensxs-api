@@ -1,12 +1,15 @@
 package com.movisens.xs.api;
 
+import java.io.IOException;
 
-import retrofit.RequestInterceptor;
+import com.squareup.okhttp.Interceptor;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
 
 /**
  * Interceptor used to authorize requests.
  */
-public class AuthRequestInterceptor implements RequestInterceptor {
+public class AuthRequestInterceptor implements Interceptor {
 
 	private String authorizationValue = "";
 
@@ -15,9 +18,17 @@ public class AuthRequestInterceptor implements RequestInterceptor {
 	}
 
 	@Override
-	public void intercept(RequestFacade requestFacade) {
-		requestFacade.addHeader("Authorization", authorizationValue);
-		requestFacade.addHeader("User-Agent", "movisensXS Java API");
-		requestFacade.addHeader("Accept", "application/json");
+	public Response intercept(Chain chain) throws IOException {
+		Request original = chain.request();
+
+		Request request = original.newBuilder()
+				.addHeader("Authorization", authorizationValue)
+				.addHeader("User-Agent", "movisensXS Java API")
+				.addHeader("Accept", "application/json")
+				.build();
+
+		Response response = chain.proceed(request);
+
+		return response;
 	}
 }

@@ -1,29 +1,28 @@
 package com.movisens.xs.api.exceptions;
 
-import retrofit.RetrofitError;
+import java.io.IOException;
 
 import com.movisens.xs.api.models.ApiError;
 
-public class MovisensXSException extends Exception {
+public class MovisensXSException extends IOException {
 
 	private static final long serialVersionUID = 1359714572930063286L;
 
-	public MovisensXSException(ApiError apiError, RetrofitError cause) {
-		super(getMessage(apiError, cause), cause);
+	public MovisensXSException(ApiError apiError) {
+		super(parseMessage(apiError));
+
 	}
 
-	public MovisensXSException(RetrofitError cause) {
-		super(cause);
+	private static String parseMessage(ApiError apiError) {
+		if (apiError != null) {
+			return apiError.getMessage();
+		} else {
+			return new ApiError("unknown", "unknown").getMessage();
+		}
 	}
 
-	public static String getMessage(ApiError apiError, RetrofitError cause) {
-		String message = "Could not read error message from server";
-		if (cause != null && cause.getMessage() != null) {
-			message = cause.getMessage();
-		}
-		if (apiError != null && apiError.getMessage() != null) {
-			message = apiError.getMessage();
-		}
-		return message;
+	public MovisensXSException() {
+		super();
 	}
+
 }
