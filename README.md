@@ -41,23 +41,22 @@ libraryDependencies += "com.github.movisens" % "movisensxs-api" % "0.4"
 // Create movisensXS Service
 String SERVER_URL = "https://xs.movisens.com";
 String API_KEY = "API KEY HERE";
-	
-XSService service = new XSApi.Builder(API_KEY).setServer(SERVER_URL)
-			.build().create(XSService.class);
+
+XSService service = new XSApi.Builder(API_KEY).setServer(SERVER_URL).build().create(XSService.class);
 
 // Call API synchronous
-List<Proband> probands = service.getProbands(989);
+List<Proband> probands = service.getProbands(STUDY_ID).execute().body();
 
 // Or asynchronous	
-service.getProbands(989, new Callback<List<Proband>>() {
+call.enqueue(new Callback<List<Proband>>() {
 	@Override
-	public void success(List<Proband> probands, Response response) {
-    // TODO: Handle response
+	public void onResponse(Response<List<Proband>> response, Retrofit retrofit) {
+		// TODO: Handle response
 	}
 
 	@Override
-	public void failure(RetrofitError error) {
-    // TODO: Handle response
+	public void onFailure(Throwable t) {
+		// TODO: Handle error
 	}
 });
 ```
