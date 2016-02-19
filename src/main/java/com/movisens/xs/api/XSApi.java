@@ -6,16 +6,16 @@ import java.util.concurrent.Executor;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.movisens.xs.api.adapters.DateAdapter;
-import com.squareup.okhttp.HttpUrl;
-import com.squareup.okhttp.OkHttpClient;
-import com.squareup.okhttp.logging.HttpLoggingInterceptor;
-import com.squareup.okhttp.logging.HttpLoggingInterceptor.Level;
 
-import retrofit.BaseUrl;
-import retrofit.CallAdapter;
-import retrofit.Converter;
-import retrofit.GsonConverterFactory;
-import retrofit.Retrofit;
+import okhttp3.HttpUrl;
+import okhttp3.OkHttpClient;
+import okhttp3.logging.HttpLoggingInterceptor;
+import okhttp3.logging.HttpLoggingInterceptor.Level;
+import retrofit2.BaseUrl;
+import retrofit2.CallAdapter;
+import retrofit2.Converter;
+import retrofit2.Retrofit;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 public class XSApi {
 	public static class Builder {
@@ -42,11 +42,11 @@ public class XSApi {
 			httpLoggingInterceptor = new HttpLoggingInterceptor();
 			httpLoggingInterceptor.setLevel(Level.NONE);
 
-			OkHttpClient client = new OkHttpClient();
-
-			client.networkInterceptors().add(authRequestInterceptor);
-			client.networkInterceptors().add(errorInterceptor);
-			client.networkInterceptors().add(httpLoggingInterceptor);
+			OkHttpClient client = new OkHttpClient.Builder()
+					.addInterceptor(authRequestInterceptor)
+					.addInterceptor(errorInterceptor)
+					.addInterceptor(httpLoggingInterceptor)
+				    .build();
 
 			this.setServer(SERVER_URL)
 				.client(client)
@@ -90,11 +90,6 @@ public class XSApi {
 
 		public Builder callbackExecutor(Executor callbackExecutor) {
 			retrofit.callbackExecutor(callbackExecutor);
-			return this;
-		}
-
-		public Builder validateEagerly() {
-			retrofit.validateEagerly();
 			return this;
 		}
 
