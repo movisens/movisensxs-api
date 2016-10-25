@@ -6,9 +6,11 @@ public class MyResult extends Result {
 	MyResult() {
 	}
 
-	public int item_67;
-	public int item_65_1;
-	public int item_65_2;
-	public int item_65_3;
-
+	public int happy_sad;
+	public int others_1;
+	public int others_2;
+	public int others_3;
+	public int others_4;
+	public int others_5;
+	public int location;
 }

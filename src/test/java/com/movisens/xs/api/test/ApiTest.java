@@ -35,9 +35,10 @@ import retrofit2.Response;
  * @author Juergen, @date 22.06.14 22:50
  */
 public class ApiTest {
-	private static final String SERVER_URL = "https://staging.movisens.com";
-	private static final String API_KEY = "vce7x41urn0ecoe9l4xe08qyp4qgkgudy6npr3fp";
-	private static final Integer STUDY_ID = 4;
+	private static final String SERVER_URL = "https://xs.movisens.com";
+	private static final String API_KEY = "0qlvej2aosjwv7mimvebd7dsz4won2kj4zun4x4o";
+	private static final String USER_EMAIL = "Juergen.Stumpp+movisensXSContinuousIntegration@gmail.com";
+	private static final Integer STUDY_ID = 5180;
 	private static final Integer PARTICIPANT_ID = 1;
 
 	XSService service = new XSApi.Builder(API_KEY).setServer(SERVER_URL).build().create(XSService.class);
@@ -46,7 +47,7 @@ public class ApiTest {
 	public void testGetMessages() throws AuthorizationException, IOException, MovisensXSException {
 		Call<List<Message>> call = service.getMessages(STUDY_ID, PARTICIPANT_ID);
 		List<Message> messages = call.execute().body();
-		assertEquals("getMessages should return list with first message text is 'test'", "test",
+		assertEquals("getMessages should return list with first message text is 'Hallo'", "Hallo",
 				messages.get(0).getMessage());
 	}
 
@@ -54,7 +55,7 @@ public class ApiTest {
 	public void testSendMessage() throws AuthorizationException, IOException, MovisensXSException {
 		Call<List<Message>> call = service.getMessages(STUDY_ID, PARTICIPANT_ID);
 		int nrOfMessages = call.execute().body().size();
-		Call<Message> sendMessageCall = service.sendMessage(STUDY_ID, PARTICIPANT_ID, "Juergen.Stumpp+movisensXSDemo@gmail.com", "Unit Test");
+		Call<Message> sendMessageCall = service.sendMessage(STUDY_ID, PARTICIPANT_ID, USER_EMAIL, "Unit Test");
 		Message message = sendMessageCall.execute().body();
 		call = service.getMessages(STUDY_ID, PARTICIPANT_ID);
 		int nrOfMessagesAfterSending = call.execute().body().size();
@@ -68,14 +69,14 @@ public class ApiTest {
 	public void testGetStudy() throws AuthorizationException, IOException, MovisensXSException {
 		Study study = service.getStudy(STUDY_ID).execute().body();
 		assertEquals("getStudy should return study with id STUDY_ID", (long) STUDY_ID, study.getId());
-		assertEquals("getStudy should return study which name is 'CI-TEST", "CI-TEST", study.getName());
+		assertEquals("getStudy should return study which name is 'movisensXS API for Java", "movisensXS API for Java", study.getName());
 	}
 
 	@Test
 	public void testGetProbands() throws AuthorizationException, IOException, MovisensXSException {
 		List<Proband> probands = service.getProbands(STUDY_ID).execute().body();
 		assertEquals("getProbands should return 3 result", 3, probands.size());
-		assertEquals("getProbands user 2 should have status 'not started'", "not started", probands.get(1).getStatus());
+		assertEquals("getProbands user 2 should have status 'unknown'", "unknown", probands.get(1).getStatus());
 	}
 
 	private List<Proband> asyncProbands = null;
@@ -101,11 +102,17 @@ public class ApiTest {
 			}
 		});
 		assertEquals("getProbands should return 3 result", 3, asyncProbands.size());
-		assertEquals("getProbands user 2 should have status 'not started'", "not started", asyncProbands.get(1).getStatus());
+		assertEquals("getProbands user 2 should have status 'unknown'", "unknown", asyncProbands.get(1).getStatus());
 	}
 
 	@Test
 	public void testGetResults() throws AuthorizationException, IOException, MovisensXSException {
+		List<Result> results = service.getResults(STUDY_ID).execute().body();
+		assertEquals("getResults should return 2 results", 2, results.size());
+	}
+	
+	@Test
+	public void testGetResultsPerParticipant() throws AuthorizationException, IOException, MovisensXSException {
 		List<Result> results = service.getResults(STUDY_ID).execute().body();
 		assertEquals("getResults should return 2 results", 2, results.size());
 	}
@@ -120,7 +127,9 @@ public class ApiTest {
 		List<MyResult> results = gson.fromJson(jsonResults, collectionType);
 
 		assertEquals("getResults should return 2 results", 2, results.size());
-		assertEquals("getResults first result should have item_65_2 set to 1", 1, results.get(1).item_65_2);
+		assertEquals("getResults first result should have others_1 set to 0", 0, results.get(0).others_1);
+		assertEquals("getResults first result should have others_2 set to 1", 1, results.get(0).others_2);
+		assertEquals("getResults second result should have happy_sad set to 25", 69, results.get(1).happy_sad);
 	}
 
 	private List<Result> asyncResults = null;

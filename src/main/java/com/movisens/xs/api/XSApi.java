@@ -11,7 +11,6 @@ import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import okhttp3.logging.HttpLoggingInterceptor.Level;
-import retrofit2.BaseUrl;
 import retrofit2.CallAdapter;
 import retrofit2.Converter;
 import retrofit2.Retrofit;
@@ -69,11 +68,6 @@ public class XSApi {
 		}
 
 		public Builder baseUrl(final HttpUrl baseUrl) {
-			retrofit.baseUrl(baseUrl);
-			return this;
-		}
-
-		public Builder baseUrl(BaseUrl baseUrl) {
 			retrofit.baseUrl(baseUrl);
 			return this;
 		}

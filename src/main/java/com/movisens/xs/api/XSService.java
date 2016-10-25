@@ -28,6 +28,10 @@ public interface XSService {
 	@GET("studies/{studyId}/results")
 	Call<JsonElement> getResultsAsJson(@Path("studyId") Integer studyId) throws MovisensXSException;
 
+	@GET("studies/{studyId}/probands/{simpleProbandId}/results")
+	Call<JsonElement> getResultsAsJson(@Path("studyId") Integer studyId, @Path("simpleProbandId") Integer participantId)
+			throws MovisensXSException;
+
 	@GET("studies/{studyId}/probands/{probandId}/messages")
 	Call<List<Message>> getMessages(@Path("studyId") Integer studyId, @Path("probandId") Integer probandId)
 			throws MovisensXSException;
@@ -35,6 +39,5 @@ public interface XSService {
 	@POST("studies/{studyId}/probands/{probandId}/messages")
 	Call<Message> sendMessage(@Path("studyId") Integer studyId, @Path("probandId") Integer probandId,
 			@Query("sendingUserEmail") String sendingUserEmail, @Query("textMessage") String textMessage)
-					throws MovisensXSException;
-
+			throws MovisensXSException;
 }
