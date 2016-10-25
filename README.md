@@ -1,6 +1,6 @@
 movisensXS API for Java
 ============
-<a href="https://jitpack.io/#movisens/movisensxs-api/"><img src="https://img.shields.io/github/tag/movisens/movisensxs-api.svg?label=Maven on JitPack" /></a>
+<a href="https://jitpack.io/#movisens/movisensxs-api/"><img src="https://img.shields.io/github/tag/movisens/movisensxs-api.svg?label=Maven%20on%20JitPack" /></a>
 
 The movisensXS API for Java enables Java developers to easily work with the movisensXS server.
 
