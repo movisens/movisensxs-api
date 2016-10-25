@@ -24,6 +24,7 @@ import com.movisens.xs.api.models.Proband;
 import com.movisens.xs.api.models.Result;
 import com.movisens.xs.api.models.Study;
 
+import okhttp3.logging.HttpLoggingInterceptor.Level;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,7 +42,7 @@ public class ApiTest {
 	private static final Integer STUDY_ID = 5180;
 	private static final Integer PARTICIPANT_ID = 1;
 
-	XSService service = new XSApi.Builder(API_KEY).setServer(SERVER_URL).build().create(XSService.class);
+	XSService service = new XSApi.Builder(API_KEY).setServer(SERVER_URL).setLogLevel(Level.BASIC).build().create(XSService.class);
 
 	@Test
 	public void testGetMessages() throws AuthorizationException, IOException, MovisensXSException {
