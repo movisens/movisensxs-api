@@ -44,7 +44,7 @@ public class ErrorInterceptor implements Interceptor {
 		case 403:
 			throw new AuthorizationException(apiError);
 		case 404:
-			throw new NotFoundException(apiError);
+			throw new NotFoundException(new ApiError(String.valueOf(responseCode), "Resource not found"));
 		case 500:
 		case 503:
 			throw new ServerException(apiError);
