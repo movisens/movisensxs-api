@@ -15,13 +15,8 @@ repositories {
     maven { url "https://jitpack.io" }
 }
 dependencies {
-    compile 'com.github.movisens:movisensxs-api:0.4'
+    compile 'com.github.movisens:movisensxs-api:0.5'
 }
-```
-#### SBT ####
-```sbt
-resolvers += "jitpack" at "https://jitpack.io"
-libraryDependencies += "com.github.movisens" % "movisensxs-api" % "0.4"
 ```
 #### Maven ####
 ```maven
@@ -32,7 +27,7 @@ libraryDependencies += "com.github.movisens" % "movisensxs-api" % "0.4"
 <dependency>
     <groupId>com.github.movisens</groupId>
     <artifactId>movisensxs-api</artifactId>
-    <version>0.4</version>
+    <version>0.5</version>
 </dependency>
 ```
 ### Example Usage ###
