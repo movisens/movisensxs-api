@@ -24,6 +24,7 @@ import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.zip.ZipFile;
 
 import static com.jayway.awaitility.Awaitility.await;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -166,6 +167,25 @@ public class ApiTest {
 
 		File targetFile = new File("test.unisenszip");
 		FileUtils.copyInputStreamToFile(unisensZipStream, targetFile);
-		assertEquals("Unisens file should be available", targetFile.exists(), true);
+		unisensZipStream.close();
+		assertEquals("Unisens file should be valid", zipIsValid(targetFile), true);
+	}
+
+	private static boolean zipIsValid(final File file) {
+		ZipFile zipfile = null;
+		try {
+			zipfile = new ZipFile(file);
+			return true;
+		} catch (IOException e) {
+			return false;
+		} finally {
+			try {
+				if (zipfile != null) {
+					zipfile.close();
+					zipfile = null;
+				}
+			} catch (IOException e) {
+			}
+		}
 	}
 }
