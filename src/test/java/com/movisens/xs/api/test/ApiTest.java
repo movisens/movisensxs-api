@@ -7,10 +7,7 @@ import com.movisens.xs.api.XSApi;
 import com.movisens.xs.api.XSService;
 import com.movisens.xs.api.exceptions.AuthorizationException;
 import com.movisens.xs.api.exceptions.MovisensXSException;
-import com.movisens.xs.api.models.Message;
-import com.movisens.xs.api.models.Proband;
-import com.movisens.xs.api.models.Result;
-import com.movisens.xs.api.models.Study;
+import com.movisens.xs.api.models.*;
 import okhttp3.logging.HttpLoggingInterceptor.Level;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
@@ -22,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.zip.ZipFile;
@@ -43,6 +41,7 @@ public class ApiTest {
 	private static final String USER_EMAIL = "Juergen.Stumpp+movisensXSContinuousIntegration@gmail.com";
 	private static final Integer STUDY_ID = 5180;
 	private static final Integer PARTICIPANT_ID = 1;
+	private static final String DATE = "2019-07-16";
 
 	XSService service = new XSApi.Builder(API_KEY).setServer(SERVER_URL).setLogLevel(Level.BASIC).build().create(XSService.class);
 
@@ -64,7 +63,7 @@ public class ApiTest {
 		int nrOfMessagesAfterSending = call.execute().body().size();
 		assertEquals("getMessages should return one more message after sending", 1,
 				nrOfMessagesAfterSending - nrOfMessages);
-		assertEquals("sendMessage should return one message with the text text 'Unit Test'", "Unit Test",
+		assertEquals("sendMessage should return one message with the text 'Unit Test'", "Unit Test",
 				message.getMessage());
 	}
 
@@ -171,6 +170,51 @@ public class ApiTest {
 		assertEquals("Unisens file should be valid", zipIsValid(targetFile), true);
 	}
 
+	@Test
+	public void testSendCompliance() throws AuthorizationException, IOException, MovisensXSException {
+
+		Compliance compliance = new Compliance();
+		ArrayList<ComplianceData> dataList = new ArrayList<ComplianceData>();
+
+		ComplianceData complianceData1 = new ComplianceData();
+		complianceData1.setName("forms");
+		complianceData1.setComplianceLevel("HIGH");
+		complianceData1.setMessage("<h2>Hello</2>");
+		complianceData1.setIncludeInMail(true);
+
+		ComplianceData complianceData2 = new ComplianceData();
+		complianceData2.setName("sensor");
+		complianceData2.setComplianceLevel("LOW");
+		complianceData2.setMessage("<h2>Participant does not complete the study</2>");
+		complianceData2.setIncludeInMail(true);
+
+		ComplianceData complianceData3 = new ComplianceData();
+		complianceData3.setName("mobile sensor");
+		complianceData3.setComplianceLevel("HIGH");
+		complianceData3.setMessage("<h2>No participation in the study</2>");
+		complianceData3.setIncludeInMail(false);
+
+		ComplianceData complianceData4 = new ComplianceData();
+		complianceData4.setName("custom");
+		complianceData4.setComplianceLevel("LOW");
+		complianceData4.setMessage("<h2>Study was completed</2>");
+		complianceData4.setIncludeInMail(false);
+
+		dataList.add(complianceData1);
+		dataList.add(complianceData2);
+		dataList.add(complianceData3);
+		dataList.add(complianceData4);
+
+		compliance.setData(dataList);
+		compliance.setNotifyByEmail(true);
+
+		Call<String> sendComplianceCall = service.sendCompliance(STUDY_ID, PARTICIPANT_ID, DATE, compliance);
+		String result = sendComplianceCall.execute().body();
+
+		assertEquals("sendCompliance should return message with the text 'Success'", "Success",
+				result);
+	}
+
 	private static boolean zipIsValid(final File file) {
 		ZipFile zipfile = null;
 		try {
@@ -188,4 +232,6 @@ public class ApiTest {
 			}
 		}
 	}
+
+
 }

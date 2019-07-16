@@ -4,10 +4,7 @@ import java.util.List;
 
 import com.google.gson.JsonElement;
 import com.movisens.xs.api.exceptions.MovisensXSException;
-import com.movisens.xs.api.models.Message;
-import com.movisens.xs.api.models.Proband;
-import com.movisens.xs.api.models.Result;
-import com.movisens.xs.api.models.Study;
+import com.movisens.xs.api.models.*;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -43,5 +40,10 @@ public interface XSService {
 	@POST("studies/{studyId}/probands/{probandId}/messages")
 	Call<Message> sendMessage(@Path("studyId") Integer studyId, @Path("probandId") Integer probandId,
 			@Query("sendingUserEmail") String sendingUserEmail, @Query("textMessage") String textMessage)
+			throws MovisensXSException;
+
+	@POST("studies/{studyId}/probands/{probandId}/compliance/{date}")
+	Call<String> sendCompliance(@Path("studyId") Integer studyId, @Path("probandId") Integer probandId,
+							  @Path("date") String date, @Body Compliance compliance)
 			throws MovisensXSException;
 }
