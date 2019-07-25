@@ -41,7 +41,6 @@ public class ApiTest {
 	private static final String USER_EMAIL = "Juergen.Stumpp+movisensXSContinuousIntegration@gmail.com";
 	private static final Integer STUDY_ID = 5180;
 	private static final Integer PARTICIPANT_ID = 1;
-	private static final String DATE = "2019-07-16";
 
 	XSService service = new XSApi.Builder(API_KEY).setServer(SERVER_URL).setLogLevel(Level.BASIC).build().create(XSService.class);
 
@@ -208,6 +207,7 @@ public class ApiTest {
 		compliance.setData(dataList);
 		compliance.setNotifyByEmail(true);
 
+		String DATE = "2019-07-16";
 		Call<String> sendComplianceCall = service.sendCompliance(STUDY_ID, PARTICIPANT_ID, DATE, compliance);
 		String result = sendComplianceCall.execute().body();
 
