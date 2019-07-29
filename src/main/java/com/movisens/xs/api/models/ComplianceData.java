@@ -3,14 +3,23 @@ package com.movisens.xs.api.models;
 import com.google.gson.annotations.Expose;
 
 public class ComplianceData {
+
+
     @Expose
     private String name;
     @Expose
-    private String complianceLevel;
+    private ComplianceLevel complianceLevel;
     @Expose
     private String message;
     @Expose
     private boolean includeInMail;
+
+    public ComplianceData(String name, ComplianceLevel complianceLevel, String message, boolean includeInMail) {
+        this.name = name;
+        this.complianceLevel = complianceLevel;
+        this.message = message;
+        this.includeInMail = includeInMail;
+    }
 
     public String getName() {
         return name;
@@ -20,11 +29,11 @@ public class ComplianceData {
         this.name = name;
     }
 
-    public String getComplianceLevel() {
+    public ComplianceLevel getComplianceLevel() {
         return complianceLevel;
     }
 
-    public void setComplianceLevel(String complianceLevel) {
+    public void setComplianceLevel(ComplianceLevel complianceLevel) {
         this.complianceLevel = complianceLevel;
     }
 

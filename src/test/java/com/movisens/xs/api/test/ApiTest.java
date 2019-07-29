@@ -175,29 +175,10 @@ public class ApiTest {
 		Compliance compliance = new Compliance();
 		ArrayList<ComplianceData> dataList = new ArrayList<ComplianceData>();
 
-		ComplianceData complianceData1 = new ComplianceData();
-		complianceData1.setName("forms");
-		complianceData1.setComplianceLevel("HIGH");
-		complianceData1.setMessage("<h2>Hello</2>");
-		complianceData1.setIncludeInMail(true);
-
-		ComplianceData complianceData2 = new ComplianceData();
-		complianceData2.setName("sensor");
-		complianceData2.setComplianceLevel("LOW");
-		complianceData2.setMessage("<h2>Participant does not complete the study</2>");
-		complianceData2.setIncludeInMail(true);
-
-		ComplianceData complianceData3 = new ComplianceData();
-		complianceData3.setName("mobile sensor");
-		complianceData3.setComplianceLevel("HIGH");
-		complianceData3.setMessage("<h2>No participation in the study</2>");
-		complianceData3.setIncludeInMail(false);
-
-		ComplianceData complianceData4 = new ComplianceData();
-		complianceData4.setName("custom");
-		complianceData4.setComplianceLevel("LOW");
-		complianceData4.setMessage("<h2>Study was completed</2>");
-		complianceData4.setIncludeInMail(false);
+		ComplianceData complianceData1 = new ComplianceData("forms", ComplianceLevel.HIGH, "<h2>Hello</2>", true);
+		ComplianceData complianceData2 = new ComplianceData("sensor", ComplianceLevel.LOW, "<h2>Participant does not complete the study</2>", true);
+		ComplianceData complianceData3 = new ComplianceData("mobile sensor", ComplianceLevel.HIGH, "<h2>No participation in the study</2>", false);
+		ComplianceData complianceData4 = new ComplianceData("custom", ComplianceLevel.LOW, "<h2>Study was completed</2>", false);
 
 		dataList.add(complianceData1);
 		dataList.add(complianceData2);
