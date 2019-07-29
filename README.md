@@ -6,6 +6,8 @@ The movisensXS API for Java enables Java developers to easily work with the movi
 
 Warning: This API is currently in early beta and will be subject to change!
 
+A Postman collection of the movisensXS API is available here: https://www.getpostman.com/collections/0d55d82e27882ca7fbb8
+
 ### Set up ###
 
 Add the JitPack repository and the dependency to your build file:
