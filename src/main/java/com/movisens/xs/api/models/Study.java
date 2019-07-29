@@ -8,7 +8,7 @@ import com.google.gson.annotations.Expose;
 public class Study {
 
 	@Expose
-	private long id;
+	private Integer id;
 	@Expose
 	private String name;
 
@@ -16,7 +16,7 @@ public class Study {
 	 * 
 	 * @return The id
 	 */
-	public long getId() {
+	public Integer getId() {
 		return id;
 	}
 
@@ -25,7 +25,7 @@ public class Study {
 	 * @param id
 	 *            The id
 	 */
-	public void setId(long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
