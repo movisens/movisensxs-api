@@ -30,8 +30,8 @@ repositories {
 // In this section you declare the dependencies for your production and test code
 dependencies {
     // The production code
-    compile 'com.squareup.retrofit2:retrofit:2.1.0'
-    compile 'com.squareup.retrofit2:converter-gson:2.1.0'
+    compile 'com.squareup.retrofit2:retrofit:2.6.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.6.0'
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
 
     // Declare the dependency for your favourite test framework you want to use in your tests.

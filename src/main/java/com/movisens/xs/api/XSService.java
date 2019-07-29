@@ -11,10 +11,7 @@ import com.movisens.xs.api.models.Study;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.POST;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
+import retrofit2.http.*;
 
 public interface XSService {
 	@GET("studies/{studyId}")
@@ -35,6 +32,7 @@ public interface XSService {
 	@GET("studies/{studyId}/probands/{participantId}/results")
 	Call<JsonElement> getResultsAsJson(@Path("studyId") Integer studyId, @Path("participantId") Integer participantId) throws MovisensXSException;
 
+	@Streaming
 	@GET("studies/{studyId}/probands/{participantId}/unisens")
 	Call<ResponseBody> getMobileSensingAsUnisensZip(@Path("studyId") Integer studyId, @Path("participantId") Integer participantId) throws MovisensXSException;
 

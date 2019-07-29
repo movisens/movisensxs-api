@@ -1,69 +1,42 @@
 package com.movisens.xs.api;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
-import com.google.gson.JsonParseException;
 import com.movisens.xs.api.exceptions.AuthorizationException;
 import com.movisens.xs.api.exceptions.MovisensXSException;
 import com.movisens.xs.api.exceptions.NotFoundException;
 import com.movisens.xs.api.exceptions.ServerException;
 import com.movisens.xs.api.models.ApiError;
-
 import okhttp3.Interceptor;
-import okhttp3.Request;
 import okhttp3.Response;
-import okhttp3.ResponseBody;
+
+import java.io.IOException;
 
 public class ErrorInterceptor implements Interceptor {
 
-	@Override
-	public Response intercept(Chain chain) throws IOException {
-		Request original = chain.request();
-		Response response = chain.proceed(original);
-		
-		ApiError apiError = null;
-		try {
-			if (response.body() != null) {
-				String text = fromStream(response.body().byteStream());
-				response = response.newBuilder().body(ResponseBody.create(response.body().contentType(), text)).build();
-				apiError = ApiError.parse(text);
-			}
-		} catch (JsonParseException e) {
-		} catch (IOException e) {
-		}
+    @Override
+    public Response intercept(Chain chain) throws IOException {
+        Response response = chain.proceed(chain.request());
 
-		int responseCode = response.code();
-		
-		switch (responseCode) {
-		case 200:
-			return response;
-		case 401:
-		case 403:
-			throw new AuthorizationException(apiError);
-		case 404:
-			throw new NotFoundException(new ApiError(String.valueOf(responseCode), "Resource not found"));
-		case 500:
-		case 503:
-			throw new ServerException(apiError);
-		default:
-			throw new MovisensXSException(apiError);
-		}
+        switch (response.code()) {
+            case 200:
+                return response;
+            case 401:
+            case 403:
+                throw new AuthorizationException(getApiError(response));
+            case 404:
+                throw new NotFoundException(new ApiError(String.valueOf(404), "Resource not found"));
+            case 500:
+            case 503:
+                throw new ServerException(getApiError(response));
+            default:
+                throw new MovisensXSException(getApiError(response));
+        }
+    }
 
-	}
-
-	public static String fromStream(InputStream in) throws IOException {
-		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-		StringBuilder out = new StringBuilder();
-		String newLine = System.getProperty("line.separator");
-		String line;
-		while ((line = reader.readLine()) != null) {
-			out.append(line);
-			out.append(newLine);
-		}
-		return out.toString();
-	}
-
+    private ApiError getApiError(Response response) throws IOException {
+        ApiError apiError = null;
+        if (response.body() != null) {
+            apiError = ApiError.parse(response.body().string());
+        }
+        return apiError;
+    }
 }

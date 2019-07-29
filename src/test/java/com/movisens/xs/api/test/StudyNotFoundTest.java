@@ -16,7 +16,7 @@ import com.movisens.xs.api.models.Study;
  * @author Juergen, @date 22.06.14 22:50
  */
 public class StudyNotFoundTest {
-	private static final String SERVER_URL = "https://hoc-hc013.hoc.uni-karlsruhe.de";
+	private static final String SERVER_URL = "https://xs.movisens.com";
 	private static final String API_KEY = "e4prtw8zcmw3a4evuesyjvzmfdfop25hl9zq9h2p";
 
 	XSService service = new XSApi.Builder(API_KEY).setServer(SERVER_URL).build().create(XSService.class);
@@ -28,10 +28,9 @@ public class StudyNotFoundTest {
 		try {
 			study = service.getStudy(9999999).execute().body();
 		} catch (Exception e) {
-			e.printStackTrace();
 			ex = e;
 		}
 		assertEquals("getStudy should be null", null, study);
-		assertEquals("Exception should be NotFoundException", ex instanceof NotFoundException, true);
+		assertEquals("Exception should be NotFoundException", true, ex instanceof NotFoundException);
 	}
 }
