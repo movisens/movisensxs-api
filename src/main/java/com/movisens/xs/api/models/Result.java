@@ -175,4 +175,54 @@ public class Result {
 		this.missing = missing;
 	}
 
+	@Override
+	public String toString() {
+		return "Result{" +
+				"participantId=" + participantId +
+				", trigger='" + trigger + '\'' +
+				", triggerCounter=" + triggerCounter +
+				", form='" + form + '\'' +
+				", formStartDate='" + formStartDate + '\'' +
+				", formFinishDate='" + formFinishDate + '\'' +
+				", formUploadDate='" + formUploadDate + '\'' +
+				", missing=" + missing +
+				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Result result = (Result) o;
+
+		if (participantId != null ? !participantId.equals(result.participantId) : result.participantId != null)
+			return false;
+		if (trigger != null ? !trigger.equals(result.trigger) : result.trigger != null) return false;
+		if (triggerCounter != null ? !triggerCounter.equals(result.triggerCounter) : result.triggerCounter != null)
+			return false;
+		if (form != null ? !form.equals(result.form) : result.form != null) return false;
+		if (formStartDate != null ? !formStartDate.equals(result.formStartDate) : result.formStartDate != null)
+			return false;
+		if (formFinishDate != null ? !formFinishDate.equals(result.formFinishDate) : result.formFinishDate != null)
+			return false;
+		if (formUploadDate != null ? !formUploadDate.equals(result.formUploadDate) : result.formUploadDate != null)
+			return false;
+		if (missing != result.missing) return false;
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = participantId != null ? participantId.hashCode() : 0;
+		result = 31 * result + (trigger != null ? trigger.hashCode() : 0);
+		result = 31 * result + (triggerCounter != null ? triggerCounter.hashCode() : 0);
+		result = 31 * result + (form != null ? form.hashCode() : 0);
+		result = 31 * result + (formStartDate != null ? formStartDate.hashCode() : 0);
+		result = 31 * result + (formFinishDate != null ? formFinishDate.hashCode() : 0);
+		result = 31 * result + (formUploadDate != null ? formUploadDate.hashCode() : 0);
+		result = 31 * result + (missing != null ? missing.hashCode() : 0);
+		return result;
+	}
 }

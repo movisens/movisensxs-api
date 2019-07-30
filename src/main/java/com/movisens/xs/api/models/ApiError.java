@@ -25,4 +25,29 @@ public class ApiError {
 		return apiError;
 	}
 
+	@Override
+	public String toString() {
+		return "ApiError{" +
+				"error='" + error + '\'' +
+				", error_description='" + error_description + '\'' +
+				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		ApiError apiError = (ApiError) o;
+
+		if (error != null ? !error.equals(apiError.error) : apiError.error != null) return false;
+		return error_description != null ? error_description.equals(apiError.error_description) : apiError.error_description == null;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = error != null ? error.hashCode() : 0;
+		result = 31 * result + (error_description != null ? error_description.hashCode() : 0);
+		return result;
+	}
 }

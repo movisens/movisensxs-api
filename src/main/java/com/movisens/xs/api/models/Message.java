@@ -122,4 +122,45 @@ public class Message {
 		this.sendingUserEmail = sendingUserEmail;
 	}
 
+	@Override
+	public String toString() {
+		return "Message{" +
+				"id=" + id +
+				", creationDate='" + creationDate + '\'' +
+				", message='" + message + '\'' +
+				", messageRead=" + messageRead +
+				", fromProband=" + fromProband +
+				", sendingUserEmail='" + sendingUserEmail + '\'' +
+				'}';
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (this == o) return true;
+		if (o == null || getClass() != o.getClass()) return false;
+
+		Message message1 = (Message) o;
+
+		if (id != message1.id) return false;
+		if (messageRead != message1.messageRead) return false;
+		if (fromProband != message1.fromProband) return false;
+		if (creationDate != null ? !creationDate.equals(message1.creationDate) : message1.creationDate != null)
+			return false;
+		if (message != null ? !message.equals(message1.message) : message1.message != null) return false;
+		if (sendingUserEmail != null ? !sendingUserEmail.equals(message1.sendingUserEmail) : message1.sendingUserEmail != null)
+			return false;
+
+		return true;
+	}
+
+	@Override
+	public int hashCode() {
+		int result = (int) (id ^ (id >>> 32));
+		result = 31 * result + (creationDate != null ? creationDate.hashCode() : 0);
+		result = 31 * result + (message != null ? message.hashCode() : 0);
+		result = 31 * result + (messageRead ? 1 : 0);
+		result = 31 * result + (fromProband ? 1 : 0);
+		result = 31 * result + (sendingUserEmail != null ? sendingUserEmail.hashCode() : 0);
+		return result;
+	}
 }
