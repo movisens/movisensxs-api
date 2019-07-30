@@ -7,86 +7,78 @@ import com.google.gson.annotations.SerializedName;
 @Generated("org.jsonschema2pojo")
 public class Result {
 
+	@SerializedName("Participant")
 	@Expose
-	private Integer Participant;
+	private Integer participantId;
+	@SerializedName("Trigger")
 	@Expose
-	private Integer Device;
-	@Expose
-	private String Trigger;
+	private String trigger;
 	@SerializedName("Trigger_counter")
 	@Expose
-	private Integer TriggerCounter;
+	private Integer triggerCounter;
+	@SerializedName("Form")
 	@Expose
-	private String Form;
+	private String form;
 	@SerializedName("Form_start_date")
 	@Expose
-	private String FormStartDate;
+	private String formStartDate;
 	@SerializedName("Form_finish_date")
 	@Expose
-	private String FormFinishDate;
+	private String formFinishDate;
 	@SerializedName("Form_upload_date")
 	@Expose
-	private String FormUploadDate;
+	private String formUploadDate;
+	@SerializedName("Missing")
 	@Expose
-	private String Missing;
+	private Missing missing;
+
+	public enum Missing {
+		@SerializedName("Ignored") IGNORED,
+		@SerializedName("Dismissed") DISMISSED,
+		@SerializedName("Incomplete") INCOMPLETE,
+		@SerializedName("Canceled_by_new_alarm") CANCELED_BY_NEW_ALARM
+	}
 
 	/**
 	 * 
-	 * @return The Participant
+	 * @return The participant
 	 */
-	public Integer getParticipant() {
-		return Participant;
+	public Integer getParticipantId() {
+		return participantId;
 	}
 
 	/**
 	 * 
 	 * @param Participant
-	 *            The Participant
+	 *            The participant
 	 */
-	public void setParticipant(Integer Participant) {
-		this.Participant = Participant;
+	public void setParticipantId(Integer participantId) {
+		this.participantId = participantId;
 	}
 
 	/**
 	 * 
-	 * @return The Device
-	 */
-	public Integer getDevice() {
-		return Device;
-	}
-
-	/**
-	 * 
-	 * @param Device
-	 *            The Device
-	 */
-	public void setDevice(Integer Device) {
-		this.Device = Device;
-	}
-
-	/**
-	 * 
-	 * @return The Trigger
+	 * @return The trigger
 	 */
 	public String getTrigger() {
-		return Trigger;
+		return trigger;
 	}
 
 	/**
 	 * 
 	 * @param Trigger
-	 *            The Trigger
+	 *            The trigger
 	 */
 	public void setTrigger(String Trigger) {
-		this.Trigger = Trigger;
+		this.trigger = Trigger;
 	}
 
 	/**
 	 * 
-	 * @return The TriggerCounter
+	 * @return The triggerCounter
 	 */
 	public Integer getTriggerCounter() {
-		return TriggerCounter;
+		return triggerCounter;
 	}
 
 	/**
@@ -95,32 +87,32 @@ public class Result {
 	 *            The Trigger_counter
 	 */
 	public void setTriggerCounter(Integer TriggerCounter) {
-		this.TriggerCounter = TriggerCounter;
+		this.triggerCounter = TriggerCounter;
 	}
 
 	/**
 	 * 
-	 * @return The Form
+	 * @return The form
 	 */
 	public String getForm() {
-		return Form;
+		return form;
 	}
 
 	/**
 	 * 
 	 * @param Form
-	 *            The Form
+	 *            The form
 	 */
 	public void setForm(String Form) {
-		this.Form = Form;
+		this.form = Form;
 	}
 
 	/**
 	 * 
-	 * @return The FormStartDate
+	 * @return The formStartDate
 	 */
 	public String getFormStartDate() {
-		return FormStartDate;
+		return formStartDate;
 	}
 
 	/**
@@ -129,15 +121,15 @@ public class Result {
 	 *            The Form_start_date
 	 */
 	public void setFormStartDate(String FormStartDate) {
-		this.FormStartDate = FormStartDate;
+		this.formStartDate = FormStartDate;
 	}
 
 	/**
 	 * 
-	 * @return The FormFinishDate
+	 * @return The formFinishDate
 	 */
 	public String getFormFinishDate() {
-		return FormFinishDate;
+		return formFinishDate;
 	}
 
 	/**
@@ -146,15 +138,15 @@ public class Result {
 	 *            The Form_finish_date
 	 */
 	public void setFormFinishDate(String FormFinishDate) {
-		this.FormFinishDate = FormFinishDate;
+		this.formFinishDate = FormFinishDate;
 	}
 
 	/**
 	 * 
-	 * @return The FormUploadDate
+	 * @return The formUploadDate
 	 */
 	public String getFormUploadDate() {
-		return FormUploadDate;
+		return formUploadDate;
 	}
 
 	/**
@@ -163,24 +155,24 @@ public class Result {
 	 *            The Form_upload_date
 	 */
 	public void setFormUploadDate(String FormUploadDate) {
-		this.FormUploadDate = FormUploadDate;
+		this.formUploadDate = FormUploadDate;
 	}
 
 	/**
 	 * 
-	 * @return The Missing
+	 * @return The missing
 	 */
-	public String getMissing() {
-		return Missing;
+	public Missing getMissing() {
+		return missing;
 	}
 
 	/**
 	 * 
 	 * @param Missing
-	 *            The Missing
+	 *            The missing
 	 */
-	public void setMissing(String Missing) {
-		this.Missing = Missing;
+	public void setMissing(Missing missing) {
+		this.missing = missing;
 	}
 
 }
