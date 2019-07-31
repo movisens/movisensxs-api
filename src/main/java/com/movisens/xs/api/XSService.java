@@ -42,8 +42,7 @@ public interface XSService {
 			@Query("sendingUserEmail") String sendingUserEmail, @Query("textMessage") String textMessage)
 			throws MovisensXSException;
 
-	@POST("studies/{studyId}/probands/{probandId}/compliance/{date}")
-	Call<String> sendCompliance(@Path("studyId") Integer studyId, @Path("probandId") Integer probandId,
-							  @Path("date") String date, @Body Compliance compliance)
+	@POST("studies/{studyId}/compliance")
+	Call<String> sendCompliance(@Path("studyId") Integer studyId, @Body List<Compliance> complianceList)
 			throws MovisensXSException;
 }

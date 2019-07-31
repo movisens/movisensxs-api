@@ -11,8 +11,25 @@ public class Compliance {
     List<ComplianceData> complianceDataList = new LinkedList<ComplianceData>();
     @Expose
     private boolean notifyByEmail;
+    private Integer probandId;
+    private String date;
 
-    public List<ComplianceData> getData() {
+    public Compliance(Integer probandId, String date) {
+        this.probandId = probandId;
+        this.date = date;
+    }
+
+    public Compliance(Integer probandId, String date, boolean notifyByEmail) {
+        this(probandId, date);
+        this.notifyByEmail = notifyByEmail;
+    }
+
+    public Compliance(Integer probandId, String date, boolean notifyByEmail, List<ComplianceData> complianceDataList) {
+        this(probandId, date, notifyByEmail);
+        this.complianceDataList = complianceDataList;
+    }
+
+    public List<ComplianceData> getComplianceData() {
         return complianceDataList;
     }
 

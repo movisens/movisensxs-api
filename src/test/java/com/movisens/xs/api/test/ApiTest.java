@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.zip.ZipFile;
@@ -172,7 +173,7 @@ public class ApiTest {
 	@Test
 	public void testSendCompliance() throws AuthorizationException, IOException, MovisensXSException {
 
-		Compliance compliance = new Compliance();
+		Compliance compliance = new Compliance(PARTICIPANT_ID, "2019-07-16");
 		ArrayList<ComplianceData> dataList = new ArrayList<ComplianceData>();
 
 		ComplianceData complianceData1 = new ComplianceData("forms", ComplianceLevel.HIGH, "<h2>Hello</2>", true);
@@ -188,8 +189,7 @@ public class ApiTest {
 		compliance.setComplianceData(dataList);
 		compliance.setNotifyByEmail(true);
 
-		String DATE = "2019-07-16";
-		Call<String> sendComplianceCall = service.sendCompliance(STUDY_ID, PARTICIPANT_ID, DATE, compliance);
+		Call<String> sendComplianceCall = service.sendCompliance(STUDY_ID, Arrays.asList(compliance));
 		String result = sendComplianceCall.execute().body();
 
 		assertEquals("sendCompliance should return message with the text 'Success'", "Success",
