@@ -4,7 +4,6 @@ import com.google.gson.annotations.Expose;
 
 public class ComplianceData {
 
-
     @Expose
     private String name;
     @Expose

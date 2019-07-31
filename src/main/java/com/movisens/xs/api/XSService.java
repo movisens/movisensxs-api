@@ -43,6 +43,6 @@ public interface XSService {
 			throws MovisensXSException;
 
 	@POST("studies/{studyId}/compliance")
-	Call<String> sendCompliance(@Path("studyId") Integer studyId, @Body List<Compliance> complianceList)
+	Call<String> sendCompliance(@Path("studyId") Integer studyId, @Body ComplianceRequest complianceRequest)
 			throws MovisensXSException;
 }

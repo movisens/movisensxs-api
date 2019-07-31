@@ -189,7 +189,13 @@ public class ApiTest {
 		compliance.setComplianceData(dataList);
 		compliance.setNotifyByEmail(true);
 
-		Call<String> sendComplianceCall = service.sendCompliance(STUDY_ID, Arrays.asList(compliance));
+		List<Compliance> complianceList = new ArrayList<Compliance>();
+		complianceList.add(compliance);
+
+		ComplianceRequest complianceRequest = new ComplianceRequest();
+		complianceRequest.setComplianceList(complianceList);
+
+		Call<String> sendComplianceCall = service.sendCompliance(STUDY_ID, complianceRequest);
 		String result = sendComplianceCall.execute().body();
 
 		assertEquals("sendCompliance should return message with the text 'Success'", "Success",

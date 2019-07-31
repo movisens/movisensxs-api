@@ -8,7 +8,7 @@ import java.util.List;
 public class Compliance {
 
     @Expose
-    List<ComplianceData> complianceDataList = new LinkedList<ComplianceData>();
+    List<ComplianceData> complianceData = new LinkedList<ComplianceData>();
     @Expose
     private boolean notifyByEmail;
     private Integer probandId;
@@ -24,25 +24,25 @@ public class Compliance {
         this.notifyByEmail = notifyByEmail;
     }
 
-    public Compliance(Integer probandId, String date, boolean notifyByEmail, List<ComplianceData> complianceDataList) {
+    public Compliance(Integer probandId, String date, boolean notifyByEmail, List<ComplianceData> complianceData) {
         this(probandId, date, notifyByEmail);
-        this.complianceDataList = complianceDataList;
+        this.complianceData = complianceData;
     }
 
     public List<ComplianceData> getComplianceData() {
-        return complianceDataList;
+        return complianceData;
     }
 
     public void setComplianceData(List<ComplianceData> data) {
-        this.complianceDataList = data;
+        this.complianceData = data;
     }
 
     public void addComplianceData(List<ComplianceData> data) {
-        this.complianceDataList.addAll(data);
+        this.complianceData.addAll(data);
     }
 
     public void addComplianceData(ComplianceData data) {
-        this.complianceDataList.add(data);
+        this.complianceData.add(data);
     }
 
     public boolean isNotifyByEmail() {
