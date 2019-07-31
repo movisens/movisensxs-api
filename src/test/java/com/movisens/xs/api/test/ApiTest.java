@@ -185,7 +185,7 @@ public class ApiTest {
 		dataList.add(complianceData3);
 		dataList.add(complianceData4);
 
-		compliance.setData(dataList);
+		compliance.setComplianceData(dataList);
 		compliance.setNotifyByEmail(true);
 
 		String DATE = "2019-07-16";
