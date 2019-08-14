@@ -8,6 +8,7 @@ import com.movisens.xs.api.XSService;
 import com.movisens.xs.api.exceptions.AuthorizationException;
 import com.movisens.xs.api.exceptions.MovisensXSException;
 import com.movisens.xs.api.models.*;
+import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor.Level;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
@@ -20,7 +21,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.zip.ZipFile;
@@ -42,7 +42,7 @@ public class ApiTest {
 	private static final String USER_EMAIL = "Juergen.Stumpp+movisensXSContinuousIntegration@gmail.com";
 	private static final Integer STUDY_ID = 5180;
 	private static final Integer PARTICIPANT_ID = 1;
-
+	
 	XSService service = new XSApi.Builder(API_KEY).setServer(SERVER_URL).setLogLevel(Level.BASIC).build().create(XSService.class);
 
 	@Test
@@ -173,24 +173,29 @@ public class ApiTest {
 	@Test
 	public void testSendCompliance() throws AuthorizationException, IOException, MovisensXSException {
 
-		Compliance compliance = new Compliance(PARTICIPANT_ID, "2019-07-16");
-		ArrayList<ComplianceData> dataList = new ArrayList<ComplianceData>();
-
-		ComplianceData complianceData1 = new ComplianceData("forms", ComplianceLevel.HIGH, "<h2>Hello</2>", true);
-		ComplianceData complianceData2 = new ComplianceData("sensor", ComplianceLevel.LOW, "<h2>Participant does not complete the study</2>", true);
-		ComplianceData complianceData3 = new ComplianceData("mobile sensor", ComplianceLevel.HIGH, "<h2>No participation in the study</2>", false);
-		ComplianceData complianceData4 = new ComplianceData("custom", ComplianceLevel.LOW, "<h2>Study was completed</2>", false);
-
-		dataList.add(complianceData1);
-		dataList.add(complianceData2);
-		dataList.add(complianceData3);
-		dataList.add(complianceData4);
-
-		compliance.setComplianceData(dataList);
-		compliance.setNotifyByEmail(true);
+		Compliance compliance1 = new Compliance(
+				1, "2019-08-13", MonitoringType.COMPLIANCE, "Completed",
+				"<h2>No participation in the study</h2>",
+				true, "Forms", 30);
+		Compliance compliance2 = new Compliance(
+				11, "2019-08-10", MonitoringType.ALERT, "Stress episode",
+				"<h2>There has been a stress episode detected</h2>", true);
+		Compliance compliance3 = new Compliance(
+				5, "2019-07-29", MonitoringType.COMPLIANCE,
+				"Smartphone ON",
+				"<h2>Smartphone is ON/h2>",
+				true, "Mobile_Sensing", 85);
+		Compliance compliance4 = new Compliance(
+				7, "2019-08-09", MonitoringType.COMPLIANCE,
+				"Smartphone ON",
+				"<h2>What sup/h2>",
+				true, "Mobile_Sensing", 86);
 
 		List<Compliance> complianceList = new ArrayList<Compliance>();
-		complianceList.add(compliance);
+		complianceList.add(compliance1);
+		complianceList.add(compliance2);
+		complianceList.add(compliance3);
+		complianceList.add(compliance4);
 
 		ComplianceRequest complianceRequest = new ComplianceRequest();
 		complianceRequest.setComplianceList(complianceList);
@@ -200,6 +205,14 @@ public class ApiTest {
 
 		assertEquals("sendCompliance should return message with the text 'Success'", "Success",
 				result);
+	}
+
+	@Test
+	public void testGetCompliance() throws AuthorizationException, IOException, MovisensXSException {
+		ResponseBody results = service.getCompliance(STUDY_ID).execute().body();
+		System.out.println("results :: " + results.string());
+		//results.c
+		//assertEquals("getResults should return 2 results", 2, results.size());
 	}
 
 	private static boolean zipIsValid(final File file) {

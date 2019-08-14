@@ -23,15 +23,15 @@ public interface XSService {
 	@GET("studies/{studyId}/results")
 	Call<JsonElement> getResultsAsJson(@Path("studyId") Integer studyId) throws MovisensXSException;
 
-	@GET("studies/{studyId}/probands/{participantId}/results")
-	Call<List<Result>> getResults(@Path("studyId") Integer studyId, @Path("participantId") Integer participantId) throws MovisensXSException;
+	@GET("studies/{studyId}/probands/{probandId}/results")
+	Call<List<Result>> getResults(@Path("studyId") Integer studyId, @Path("probandId") Integer probandId) throws MovisensXSException;
 
-	@GET("studies/{studyId}/probands/{participantId}/results")
-	Call<JsonElement> getResultsAsJson(@Path("studyId") Integer studyId, @Path("participantId") Integer participantId) throws MovisensXSException;
+	@GET("studies/{studyId}/probands/{probandId}/results")
+	Call<JsonElement> getResultsAsJson(@Path("studyId") Integer studyId, @Path("probandId") Integer probandId) throws MovisensXSException;
 
 	@Streaming
-	@GET("studies/{studyId}/probands/{participantId}/unisens")
-	Call<ResponseBody> getMobileSensingAsUnisensZip(@Path("studyId") Integer studyId, @Path("participantId") Integer participantId) throws MovisensXSException;
+	@GET("studies/{studyId}/probands/{probandId}/unisens")
+	Call<ResponseBody> getMobileSensingAsUnisensZip(@Path("studyId") Integer studyId, @Path("probandId") Integer probandId) throws MovisensXSException;
 
 	@GET("studies/{studyId}/probands/{probandId}/messages")
 	Call<List<Message>> getMessages(@Path("studyId") Integer studyId, @Path("probandId") Integer probandId)
@@ -42,7 +42,11 @@ public interface XSService {
 			@Query("sendingUserEmail") String sendingUserEmail, @Query("textMessage") String textMessage)
 			throws MovisensXSException;
 
-	@POST("studies/{studyId}/compliance")
+	@POST("studies/{studyId}/monitoring")
 	Call<String> sendCompliance(@Path("studyId") Integer studyId, @Body ComplianceRequest complianceRequest)
+			throws MovisensXSException;
+
+	@GET("studies/{studyId}/monitoring")
+	Call<ResponseBody> getCompliance(@Path("studyId") Integer studyId)
 			throws MovisensXSException;
 }
