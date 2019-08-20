@@ -37,12 +37,13 @@ import static org.junit.Assert.fail;
  * @author Juergen, @date 22.06.14 22:50
  */
 public class ApiTest {
-	private static final String SERVER_URL = "https://xs.movisens.com";
+
+    private static final String SERVER_URL = "https://xs.movisens.com";
 	private static final String API_KEY = "0qlvej2aosjwv7mimvebd7dsz4won2kj4zun4x4o";
 	private static final String USER_EMAIL = "Juergen.Stumpp+movisensXSContinuousIntegration@gmail.com";
 	private static final Integer STUDY_ID = 5180;
 	private static final Integer PARTICIPANT_ID = 1;
-	
+
 	XSService service = new XSApi.Builder(API_KEY).setServer(SERVER_URL).setLogLevel(Level.BASIC).build().create(XSService.class);
 
 	@Test
