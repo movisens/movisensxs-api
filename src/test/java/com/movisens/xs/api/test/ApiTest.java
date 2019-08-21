@@ -174,35 +174,31 @@ public class ApiTest {
 	public void testSendCompliance() throws AuthorizationException, IOException, MovisensXSException {
 
 		MonitoringCompliance monitoringCompliance1 = new MonitoringCompliance(
-				1, "2019-08-13", Monitoring.MonitoringType.COMPLIANCE, "Completed",
+				1, "2019-08-13", "Completed",
 				"<h2>No participation in the study</h2>",
 				true, MonitoringCompliance.Category.FORMS, 30);
 
 		MonitoringCompliance monitoringCompliance2 = new MonitoringCompliance(
-				7, "2019-08-09", Monitoring.MonitoringType.COMPLIANCE,
+				7, "2019-08-09",
 				"Smartphone ON",
 				"<h2>What sup</h2>",
 				true, MonitoringCompliance.Category.MOBILE_SENSING, 86);
 
 		MonitoringCompliance monitoringCompliance3 = new MonitoringCompliance(
-				5, "2019-07-29", Monitoring.MonitoringType.COMPLIANCE,
+				5, "2019-07-29",
 				"Smartphone ON",
 				"<h2>Smartphone is ON</h2>",
 				true, MonitoringCompliance.Category.MOBILE_SENSING, 85);
 
 		MonitoringAlert monitoringAlert1 = new MonitoringAlert(2, "2019-08-13",
-				Monitoring.MonitoringType.ALERT,
 				"Stress episode",
 				"<h2>There has been a stress episode detected</h2>", true);
 
-		List<Monitoring> monitoringList = new ArrayList<Monitoring>();
-		monitoringList.add(monitoringCompliance1);
-		monitoringList.add(monitoringCompliance2);
-		monitoringList.add(monitoringCompliance3);
-		monitoringList.add(monitoringAlert1);
-
 		MonitoringRequest monitoringRequest = new MonitoringRequest();
-		monitoringRequest.setMonitoringList(monitoringList);
+		monitoringRequest.add(monitoringCompliance1);
+		monitoringRequest.add(monitoringCompliance2);
+		monitoringRequest.add(monitoringCompliance3);
+		monitoringRequest.add(monitoringAlert1);
 
 		Call<String> sendComplianceCall = service.sendCompliance(STUDY_ID, monitoringRequest);
 		String result = sendComplianceCall.execute().body();

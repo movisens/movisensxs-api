@@ -14,9 +14,9 @@ public class MonitoringCompliance extends Monitoring {
     @Expose
     private Integer value;
 
-    public MonitoringCompliance(long probandId, String date, MonitoringType type, String name, String message,
+    public MonitoringCompliance(long probandId, String date, String name, String message,
                                 boolean includeInMail, Category category, Integer value) {
-        super(probandId, date, type, name, message, includeInMail);
+        super(probandId, date, MonitoringType.COMPLIANCE, name, message, includeInMail);
         this.category = category;
         this.value = value;
     }
