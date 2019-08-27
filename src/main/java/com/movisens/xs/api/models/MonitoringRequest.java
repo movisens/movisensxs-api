@@ -12,19 +12,12 @@ public class MonitoringRequest {
 
     public MonitoringRequest() {
     }
-    public MonitoringRequest(List<Monitoring> monitoringList) {
-        this.monitoringList = monitoringList;
-    }
-
-    public List<Monitoring> getMonitoringList() {
-        return monitoringList;
-    }
-
-    public void setMonitoringList(List<Monitoring> monitoringList) {
-        this.monitoringList = monitoringList;
-    }
 
     public void add(Monitoring monitoring) {
         monitoringList.add(monitoring);
+    }
+
+    public void addAll(List<Monitoring> monitorings) {
+        monitoringList.addAll(monitorings);
     }
 }
