@@ -70,7 +70,7 @@ public class ApiTest {
 	@Test
 	public void testGetStudy() throws AuthorizationException, IOException, MovisensXSException {
 		Study study = service.getStudy(STUDY_ID).execute().body();
-		assertEquals("getStudy should return study with id STUDY_ID", (long) STUDY_ID, study.getId());
+		assertEquals("getStudy should return study with id STUDY_ID", (long) STUDY_ID, (long) study.getId());
 		assertEquals("getStudy should return study which name is 'movisensXS API for Java", "movisensXS API for Java", study.getName());
 	}
 
@@ -159,6 +159,27 @@ public class ApiTest {
 		});
 		assertEquals("getResults should return 2 results", 2, asyncResults.size());
 	}
+
+	@Test
+	public void testGetResultsAsXlsx() throws AuthorizationException, IOException, MovisensXSException {
+		InputStream xlsxStream = service.getResultsAsXLSX(STUDY_ID, PARTICIPANT_ID).execute().body().byteStream();
+
+		File targetFile = new File("participant" + PARTICIPANT_ID + "Results.xlsx");
+		FileUtils.copyInputStreamToFile(xlsxStream, targetFile);
+		xlsxStream.close();
+		assertEquals("XLSX file should be valid zip ;-)", zipIsValid(targetFile), true);
+	}
+
+	@Test
+	public void testGetAllResultsAsXlsx() throws AuthorizationException, IOException, MovisensXSException {
+		InputStream xlsxStream = service.getResultsAsXLSX(STUDY_ID, PARTICIPANT_ID).execute().body().byteStream();
+
+		File targetFile = new File("allResults.xlsx");
+		FileUtils.copyInputStreamToFile(xlsxStream, targetFile);
+		xlsxStream.close();
+		assertEquals("XLSX file should be valid zip ;-)", zipIsValid(targetFile), true);
+	}
+
 
 	@Test
 	public void testGetMobileSensingResultsAsUnisens() throws AuthorizationException, IOException, MovisensXSException {

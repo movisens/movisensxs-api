@@ -27,3 +27,5 @@ test.unisenszip
 *.ipr
 .idea/
 /out/
+participant1Results.xlsx
+allResults.xlsx

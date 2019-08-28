@@ -2,11 +2,8 @@ package com.movisens.xs.api.models;
 
 import java.util.Date;
 
-import javax.annotation.Generated;
-
 import com.google.gson.annotations.Expose;
 
-@Generated("org.jsonschema2pojo")
 public class Proband {
 
 
