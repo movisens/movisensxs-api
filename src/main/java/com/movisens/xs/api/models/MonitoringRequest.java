@@ -8,16 +8,16 @@ import java.util.List;
 public class MonitoringRequest {
 
     @Expose
-    private List<Monitoring> monitoringList = new ArrayList<Monitoring>();
+    private List<Monitoring> data = new ArrayList<Monitoring>();
 
     public MonitoringRequest() {
     }
 
     public void add(Monitoring monitoring) {
-        monitoringList.add(monitoring);
+        data.add(monitoring);
     }
 
     public void addAll(List<Monitoring> monitorings) {
-        monitoringList.addAll(monitorings);
+        data.addAll(monitorings);
     }
 }
