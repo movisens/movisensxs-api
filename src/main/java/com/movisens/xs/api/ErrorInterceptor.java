@@ -18,6 +18,7 @@ public class ErrorInterceptor implements Interceptor {
 
         switch (response.code()) {
             case 200:
+            case 201:
                 return response;
             case 401:
             case 403:
