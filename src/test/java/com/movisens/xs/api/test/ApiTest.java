@@ -20,7 +20,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.zip.ZipFile;
@@ -43,193 +42,217 @@ public class ApiTest {
     private static final Integer STUDY_ID = 5180;
     private static final Integer PARTICIPANT_ID = 1;
 
-	XSService service = new XSApi.Builder(API_KEY).setServer(SERVER_URL).setLogLevel(Level.BASIC).build().create(XSService.class);
+    XSService service = new XSApi.Builder(API_KEY).setServer(SERVER_URL).setLogLevel(Level.BASIC).build().create(XSService.class);
 
-	@Test
-	public void testGetMessages() throws AuthorizationException, IOException, MovisensXSException {
-		Call<List<Message>> call = service.getMessages(STUDY_ID, PARTICIPANT_ID);
-		List<Message> messages = call.execute().body();
-		assertEquals("getMessages should return list with first message text is 'Hallo'", "Hallo",
-				messages.get(0).getMessage());
-	}
+    @Test
+    public void testGetMessages() throws AuthorizationException, IOException, MovisensXSException {
+        Call<List<Message>> call = service.getMessages(STUDY_ID, PARTICIPANT_ID);
+        List<Message> messages = call.execute().body();
+        assertEquals("getMessages should return list with first message text is 'Hallo'", "Hallo",
+                messages.get(0).getMessage());
+    }
 
-	@Test
-	public void testSendMessage() throws AuthorizationException, IOException, MovisensXSException {
-		Call<List<Message>> call = service.getMessages(STUDY_ID, PARTICIPANT_ID);
-		int nrOfMessages = call.execute().body().size();
-		Call<Message> sendMessageCall = service.sendMessage(STUDY_ID, PARTICIPANT_ID, USER_EMAIL, "Unit Test");
-		Message message = sendMessageCall.execute().body();
-		call = service.getMessages(STUDY_ID, PARTICIPANT_ID);
-		int nrOfMessagesAfterSending = call.execute().body().size();
-		assertEquals("getMessages should return one more message after sending", 1,
-				nrOfMessagesAfterSending - nrOfMessages);
-		assertEquals("sendMessage should return one message with the text 'Unit Test'", "Unit Test",
-				message.getMessage());
-	}
+    @Test
+    public void testSendMessage() throws AuthorizationException, IOException, MovisensXSException {
+        Call<List<Message>> call = service.getMessages(STUDY_ID, PARTICIPANT_ID);
+        int nrOfMessages = call.execute().body().size();
+        Call<Message> sendMessageCall = service.sendMessage(STUDY_ID, PARTICIPANT_ID, USER_EMAIL, "Unit Test");
+        Message message = sendMessageCall.execute().body();
+        call = service.getMessages(STUDY_ID, PARTICIPANT_ID);
+        int nrOfMessagesAfterSending = call.execute().body().size();
+        assertEquals("getMessages should return one more message after sending", 1,
+                nrOfMessagesAfterSending - nrOfMessages);
+        assertEquals("sendMessage should return one message with the text 'Unit Test'", "Unit Test",
+                message.getMessage());
+    }
 
-	@Test
-	public void testGetStudy() throws AuthorizationException, IOException, MovisensXSException {
-		Study study = service.getStudy(STUDY_ID).execute().body();
-		assertEquals("getStudy should return study with id STUDY_ID", (long) STUDY_ID, study.getId());
-		assertEquals("getStudy should return study which name is 'movisensXS API for Java", "movisensXS API for Java", study.getName());
-	}
+    @Test
+    public void testGetStudy() throws AuthorizationException, IOException, MovisensXSException {
+        Study study = service.getStudy(STUDY_ID).execute().body();
+        assertEquals("getStudy should return study with id STUDY_ID", (long) STUDY_ID, study.getId());
+        assertEquals("getStudy should return study which name is 'movisensXS API for Java", "movisensXS API for Java", study.getName());
+    }
 
-	@Test
-	public void testGetProbands() throws AuthorizationException, IOException, MovisensXSException {
-		List<Proband> probands = service.getProbands(STUDY_ID).execute().body();
-		assertEquals("getProbands should return 3 result", 3, probands.size());
-		assertEquals("getProbands user 2 should have status 'unknown'", "unknown", probands.get(1).getStatus());
-	}
+    @Test
+    public void testGetProbands() throws AuthorizationException, IOException, MovisensXSException {
+        List<Proband> probands = service.getProbands(STUDY_ID).execute().body();
+        assertEquals("getProbands should return 3 result", 3, probands.size());
+        assertEquals("getProbands user 2 should have status 'unknown'", "unknown", probands.get(1).getStatus());
+    }
 
-	private List<Proband> asyncProbands = null;
+    private List<Proband> asyncProbands = null;
 
-	@Test
-	public void testGetProbandsAsync() throws MovisensXSException {
-		Call<List<Proband>> call = service.getProbands(STUDY_ID);
-		call.enqueue(new Callback<List<Proband>>() {
+    @Test
+    public void testGetProbandsAsync() throws MovisensXSException {
+        Call<List<Proband>> call = service.getProbands(STUDY_ID);
+        call.enqueue(new Callback<List<Proband>>() {
 
-			@Override
-			public void onResponse(Call<List<Proband>> call, Response<List<Proband>> response) {
-				asyncProbands = response.body();
-			}
+            @Override
+            public void onResponse(Call<List<Proband>> call, Response<List<Proband>> response) {
+                asyncProbands = response.body();
+            }
 
-			@Override
-			public void onFailure(Call<List<Proband>> call, Throwable t) {
-				fail("Error receiving probands: " + t.getMessage());
-			}
-		});
-		await().atMost(5, SECONDS).until(new Callable<Boolean>() {
-			public Boolean call() throws Exception {
-				return asyncProbands != null;
-			}
-		});
-		assertEquals("getProbands should return 3 result", 3, asyncProbands.size());
-		assertEquals("getProbands user 2 should have status 'unknown'", "unknown", asyncProbands.get(1).getStatus());
-	}
+            @Override
+            public void onFailure(Call<List<Proband>> call, Throwable t) {
+                fail("Error receiving probands: " + t.getMessage());
+            }
+        });
+        await().atMost(5, SECONDS).until(new Callable<Boolean>() {
+            public Boolean call() throws Exception {
+                return asyncProbands != null;
+            }
+        });
+        assertEquals("getProbands should return 3 result", 3, asyncProbands.size());
+        assertEquals("getProbands user 2 should have status 'unknown'", "unknown", asyncProbands.get(1).getStatus());
+    }
 
-	@Test
-	public void testGetResults() throws AuthorizationException, IOException, MovisensXSException {
-		List<Result> results = service.getResults(STUDY_ID).execute().body();
-		assertEquals("getResults should return 2 results", 2, results.size());
-	}
+    @Test
+    public void testGetResults() throws AuthorizationException, IOException, MovisensXSException {
+        List<Result> results = service.getResults(STUDY_ID).execute().body();
+        assertEquals("getResults should return 2 results", 2, results.size());
+    }
 
-	@Test
-	public void testGetResultsPerParticipant() throws AuthorizationException, IOException, MovisensXSException {
-		List<Result> results = service.getResults(STUDY_ID).execute().body();
-		assertEquals("getResults should return 2 results", 2, results.size());
-	}
+    @Test
+    public void testGetResultsPerParticipant() throws AuthorizationException, IOException, MovisensXSException {
+        List<Result> results = service.getResults(STUDY_ID).execute().body();
+        assertEquals("getResults should return 2 results", 2, results.size());
+    }
 
-	@Test
-	public void testGetResultsAsJson() throws AuthorizationException, IOException, MovisensXSException {
-		JsonElement jsonResults = service.getResultsAsJson(STUDY_ID).execute().body();
+    @Test
+    public void testGetResultsAsJson() throws AuthorizationException, IOException, MovisensXSException {
+        JsonElement jsonResults = service.getResultsAsJson(STUDY_ID).execute().body();
 
-		Gson gson = new Gson();
-		Type collectionType = new TypeToken<List<MyResult>>() {
-		}.getType();
-		List<MyResult> results = gson.fromJson(jsonResults, collectionType);
+        Gson gson = new Gson();
+        Type collectionType = new TypeToken<List<MyResult>>() {
+        }.getType();
+        List<MyResult> results = gson.fromJson(jsonResults, collectionType);
 
-		assertEquals("getResults should return 2 results", 2, results.size());
-		assertEquals("getResults first result should have others_1 set to 0", 0, results.get(0).others_1);
-		assertEquals("getResults first result should have others_2 set to 1", 1, results.get(0).others_2);
-		assertEquals("getResults second result should have happy_sad set to 25", 69, results.get(1).happy_sad);
-	}
+        assertEquals("getResults should return 2 results", 2, results.size());
+        assertEquals("getResults first result should have others_1 set to 0", 0, results.get(0).others_1);
+        assertEquals("getResults first result should have others_2 set to 1", 1, results.get(0).others_2);
+        assertEquals("getResults second result should have happy_sad set to 25", 69, results.get(1).happy_sad);
+    }
 
-	private List<Result> asyncResults = null;
+    private List<Result> asyncResults = null;
 
-	@Test
-	public void testGetResultsAsync() throws MovisensXSException {
-		Call<List<Result>> call = service.getResults(STUDY_ID);
-		call.enqueue(new Callback<List<Result>>() {
+    @Test
+    public void testGetResultsAsync() throws MovisensXSException {
+        Call<List<Result>> call = service.getResults(STUDY_ID);
+        call.enqueue(new Callback<List<Result>>() {
 
-			@Override
-			public void onResponse(Call<List<Result>> call, Response<List<Result>> response) {
-				asyncResults = response.body();
-			}
+            @Override
+            public void onResponse(Call<List<Result>> call, Response<List<Result>> response) {
+                asyncResults = response.body();
+            }
 
-			@Override
-			public void onFailure(Call<List<Result>> call, Throwable t) {
-				fail("Error receiving results: " + t.getMessage());
-			}
-		});
+            @Override
+            public void onFailure(Call<List<Result>> call, Throwable t) {
+                fail("Error receiving results: " + t.getMessage());
+            }
+        });
 
-		await().atMost(5, SECONDS).until(new Callable<Boolean>() {
-			public Boolean call() throws Exception {
-				return asyncResults != null;
-			}
-		});
-		assertEquals("getResults should return 2 results", 2, asyncResults.size());
-	}
+        await().atMost(5, SECONDS).until(new Callable<Boolean>() {
+            public Boolean call() throws Exception {
+                return asyncResults != null;
+            }
+        });
+        assertEquals("getResults should return 2 results", 2, asyncResults.size());
+    }
 
-	@Test
-	public void testGetMobileSensingResultsAsUnisens() throws AuthorizationException, IOException, MovisensXSException {
-		InputStream unisensZipStream = service.getMobileSensingAsUnisensZip(STUDY_ID, PARTICIPANT_ID).execute().body().byteStream();
+    @Test
+    public void testGetMobileSensingResultsAsUnisens() throws AuthorizationException, IOException, MovisensXSException {
+        InputStream unisensZipStream = service.getMobileSensingAsUnisensZip(STUDY_ID, PARTICIPANT_ID).execute().body().byteStream();
 
-		File targetFile = new File("test.unisenszip");
-		FileUtils.copyInputStreamToFile(unisensZipStream, targetFile);
-		unisensZipStream.close();
-		assertEquals("Unisens file should be valid", zipIsValid(targetFile), true);
-	}
+        File targetFile = new File("test.unisenszip");
+        FileUtils.copyInputStreamToFile(unisensZipStream, targetFile);
+        unisensZipStream.close();
+        assertEquals("Unisens file should be valid", zipIsValid(targetFile), true);
+    }
 
-	@Test
-	public void testSendCompliance() throws AuthorizationException, IOException, MovisensXSException {
+    @Test
+    public void testSendMonitoring() throws AuthorizationException, IOException, MovisensXSException {
 
-		MonitoringCompliance monitoringCompliance1 = new MonitoringCompliance(
-				1, "2019-08-13", "Completed",
-				"<h2>No participation in the study</h2>",
-				true, MonitoringCompliance.Category.FORMS, 30);
+        MonitoringCompliance monitoringCompliance1 = new MonitoringCompliance(
+                1, "2019-08-13", "Completed",
+                "<h2>No participation in the study</h2>",
+                true, MonitoringCompliance.Category.FORMS, 30);
 
-		MonitoringCompliance monitoringCompliance2 = new MonitoringCompliance(
-				7, "2019-08-09",
-				"Smartphone ON",
-				"<h2>What sup</h2>",
-				true, MonitoringCompliance.Category.MOBILE_SENSING, 86);
+        MonitoringCompliance monitoringCompliance2 = new MonitoringCompliance(
+                7, "2019-08-09",
+                "Smartphone ON",
+                "<h2>What sup</h2>",
+                true, MonitoringCompliance.Category.MOBILE_SENSING, 86);
 
-		MonitoringCompliance monitoringCompliance3 = new MonitoringCompliance(
-				5, "2019-07-29",
-				"Smartphone ON",
-				"<h2>Smartphone is ON</h2>",
-				true, MonitoringCompliance.Category.MOBILE_SENSING, 85);
+        MonitoringCompliance monitoringCompliance3 = new MonitoringCompliance(
+                5, "2019-07-29",
+                "Smartphone ON",
+                "<h2>Smartphone is ON</h2>",
+                true, MonitoringCompliance.Category.MOBILE_SENSING, 85);
 
-		MonitoringAlert monitoringAlert1 = new MonitoringAlert(2, "2019-08-13",
-				"Stress episode",
-				"<h2>There has been a stress episode detected</h2>", true);
+        MonitoringAlert monitoringAlert1 = new MonitoringAlert(2, "2019-08-13",
+                "Stress episode",
+                "<h2>There has been a stress episode detected</h2>", true);
 
-		MonitoringRequest monitoringRequest = new MonitoringRequest();
-		monitoringRequest.add(monitoringCompliance1);
-		monitoringRequest.add(monitoringCompliance2);
-		monitoringRequest.add(monitoringCompliance3);
-		monitoringRequest.add(monitoringAlert1);
+        MonitoringRequest monitoringRequest = new MonitoringRequest();
+        monitoringRequest.add(monitoringCompliance1);
+        monitoringRequest.add(monitoringCompliance2);
+        monitoringRequest.add(monitoringCompliance3);
+        monitoringRequest.add(monitoringAlert1);
 
-		Call<String> sendComplianceCall = service.sendCompliance(STUDY_ID, monitoringRequest);
-		String result = sendComplianceCall.execute().body();
+        /*
+        Response response = service.sendMonitoring(STUDY_ID, monitoringRequest).execute();
+        System.out.println("response.body() :: " + response.toString());
+        assertEquals(201, response.code());
+        */
 
-		assertEquals("sendCompliance should return message with the text 'Success'", "Success",
-				result);
-	}
+        Response response = service.sendMonitoring(STUDY_ID, monitoringRequest).execute();
+        ApiSuccessResponse body = (ApiSuccessResponse) response.body();
+        assertEquals(201, response.code());
+        assertEquals("sendMonitoringCall should return message with the text 'Success'", "success",
+                body.status);
 
-	@Test
-	public void testGetMonitoring() throws AuthorizationException, IOException, MovisensXSException {
-		ResponseBody results = service.getMonitoring(STUDY_ID).execute().body();
-		assertNotNull("testGetMonitoring not be null", results);
-	}
+    }
 
-	private static boolean zipIsValid(final File file) {
-		ZipFile zipfile = null;
-		try {
-			zipfile = new ZipFile(file);
-			return true;
-		} catch (IOException e) {
-			return false;
-		} finally {
-			try {
-				if (zipfile != null) {
-					zipfile.close();
-					zipfile = null;
-				}
-			} catch (IOException e) {
-			}
-		}
-	}
+    @Test
+    public void testGetMonitoring() throws AuthorizationException, IOException, MovisensXSException {
+
+        Response response = service.getMonitoring(STUDY_ID).execute();
+        ApiSuccessResponse body = (ApiSuccessResponse) response.body();
+        assertEquals(200, response.code());
+        assertNotNull("testGetMonitoring not be null", body.data);
+
+    }
+
+
+    @Test
+    public void testGetgetMonitoringPerProband() throws AuthorizationException, IOException, MovisensXSException {
+
+        String DATE = "2019-08-13";
+
+        Response response = service.getMonitoringPerProband(STUDY_ID, PARTICIPANT_ID, DATE).execute();
+        ApiSuccessResponse body = (ApiSuccessResponse) response.body();
+        assertEquals(200, response.code());
+        assertNotNull("testGetgetMonitoringPerProband not be null", body.data);
+
+    }
+
+    private static boolean zipIsValid(final File file) {
+        ZipFile zipfile = null;
+        try {
+            zipfile = new ZipFile(file);
+            return true;
+        } catch (IOException e) {
+            return false;
+        } finally {
+            try {
+                if (zipfile != null) {
+                    zipfile.close();
+                    zipfile = null;
+                }
+            } catch (IOException e) {
+            }
+        }
+    }
 
 
 }
