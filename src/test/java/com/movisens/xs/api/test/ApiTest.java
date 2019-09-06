@@ -8,7 +8,6 @@ import com.movisens.xs.api.XSService;
 import com.movisens.xs.api.exceptions.AuthorizationException;
 import com.movisens.xs.api.exceptions.MovisensXSException;
 import com.movisens.xs.api.models.*;
-import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor.Level;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
@@ -200,14 +199,13 @@ public class ApiTest {
         monitoringRequest.add(monitoringAlert1);
 
         Response response = service.sendMonitoring(STUDY_ID, monitoringRequest).execute();
-        ApiSuccessResponse body = (ApiSuccessResponse) response.body();
         assertEquals(201, response.code());
     }
 
     @Test
     public void testGetMonitoring() throws AuthorizationException, IOException, MovisensXSException {
         Response response = service.getMonitoring(STUDY_ID).execute();
-        ApiSuccessResponse body = (ApiSuccessResponse) response.body();
+        ApiResponse body = (ApiResponse) response.body();
         assertEquals(200, response.code());
         assertNotNull("testGetMonitoring not be null", body.data);
     }
@@ -218,7 +216,7 @@ public class ApiTest {
         String DATE = "2019-08-13";
 
         Response response = service.getMonitoringPerProband(STUDY_ID, PARTICIPANT_ID, DATE).execute();
-        ApiSuccessResponse body = (ApiSuccessResponse) response.body();
+        ApiResponse body = (ApiResponse) response.body();
         assertEquals(200, response.code());
         assertNotNull("testGetgetMonitoringPerProband not be null", body.data);
     }
