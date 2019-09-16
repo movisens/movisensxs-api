@@ -20,4 +20,8 @@ public class MonitoringRequest {
     public void addAll(List<Monitoring> monitorings) {
         data.addAll(monitorings);
     }
+
+    public List<Monitoring> getData() {
+        return data;
+    }
 }
