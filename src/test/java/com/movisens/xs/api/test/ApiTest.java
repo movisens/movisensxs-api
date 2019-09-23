@@ -78,7 +78,7 @@ public class ApiTest {
 	public void testGetProbands() throws AuthorizationException, IOException, MovisensXSException {
 		List<Proband> probands = service.getProbands(STUDY_ID).execute().body();
 		assertEquals("getProbands should return 3 result", 3, probands.size());
-		assertEquals("getProbands user 2 should have status 'unknown'", "unknown", probands.get(1).getStatus());
+		assertEquals("getProbands user 2 should have status 'unknown'", Proband.ProbandStatus.UNKNOWN, probands.get(1).getStatus());
 	}
 
 	private List<Proband> asyncProbands = null;

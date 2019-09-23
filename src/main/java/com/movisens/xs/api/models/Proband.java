@@ -3,9 +3,9 @@ package com.movisens.xs.api.models;
 import java.util.Date;
 
 import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 public class Proband {
-
 
 	@Expose
 	private Integer id;
@@ -21,7 +21,15 @@ public class Proband {
 	private String currentVersion;
 
 	@Expose
-	private String status;
+	private ProbandStatus status;
+
+	public enum ProbandStatus {
+		@SerializedName("running") RUNNING,
+		@SerializedName("paused") PAUSED,
+		@SerializedName("uncoupled") UNCOUPLED,
+		@SerializedName("unknown") UNKNOWN,
+		@SerializedName("finished") FINISHED
+	}
 
 	public Date getCoupleDate() {
 		return coupleDate;
@@ -32,7 +40,7 @@ public class Proband {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return The currentVersion
 	 */
 	public String getCurrentVersion() {
@@ -44,7 +52,7 @@ public class Proband {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return The id
 	 */
 	public Integer getId() {
@@ -56,10 +64,10 @@ public class Proband {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return The status
 	 */
-	public String getStatus() {
+	public ProbandStatus getStatus() {
 		return status;
 	}
 
@@ -72,7 +80,7 @@ public class Proband {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param currentVersion
 	 *            The currentVersion
 	 */
@@ -85,7 +93,7 @@ public class Proband {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param id
 	 *            The id
 	 */
@@ -98,11 +106,11 @@ public class Proband {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param status
 	 *            The status
 	 */
-	public void setStatus(String status) {
+	public void setStatus(ProbandStatus status) {
 		this.status = status;
 	}
 
