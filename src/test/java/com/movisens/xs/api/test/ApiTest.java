@@ -8,7 +8,6 @@ import com.movisens.xs.api.XSService;
 import com.movisens.xs.api.exceptions.AuthorizationException;
 import com.movisens.xs.api.exceptions.MovisensXSException;
 import com.movisens.xs.api.models.*;
-import okhttp3.ResponseBody;
 import okhttp3.logging.HttpLoggingInterceptor.Level;
 import org.apache.commons.io.FileUtils;
 import org.junit.Test;
@@ -191,7 +190,7 @@ public class ApiTest {
     }
 
     @Test
-    public void testSendCompliance() throws AuthorizationException, IOException, MovisensXSException {
+    public void testSendMonitoring() throws AuthorizationException, IOException, MovisensXSException {
 
         MonitoringCompliance monitoringCompliance1 = new MonitoringCompliance(
                 1, "2019-08-13", "Completed",
@@ -220,17 +219,27 @@ public class ApiTest {
         monitoringRequest.add(monitoringCompliance3);
         monitoringRequest.add(monitoringAlert1);
 
-        Call<String> sendComplianceCall = service.sendCompliance(STUDY_ID, monitoringRequest);
-        String result = sendComplianceCall.execute().body();
-
-        assertEquals("sendCompliance should return message with the text 'Success'", "Success",
-                result);
+        Response response = service.sendMonitoring(STUDY_ID, monitoringRequest).execute();
+        assertEquals(201, response.code());
     }
 
     @Test
     public void testGetMonitoring() throws AuthorizationException, IOException, MovisensXSException {
-        ResponseBody results = service.getMonitoring(STUDY_ID).execute().body();
-        assertNotNull("testGetMonitoring not be null", results);
+        Response response = service.getMonitoring(STUDY_ID).execute();
+        ApiResponse body = (ApiResponse) response.body();
+        assertEquals(200, response.code());
+        assertNotNull("testGetMonitoring not be null", body.data);
+    }
+
+
+    @Test
+    public void testGetgetMonitoringPerProband() throws AuthorizationException, IOException, MovisensXSException {
+        String DATE = "2019-08-13";
+
+        Response response = service.getMonitoringPerProband(STUDY_ID, PARTICIPANT_ID, DATE).execute();
+        ApiResponse body = (ApiResponse) response.body();
+        assertEquals(200, response.code());
+        assertNotNull("testGetgetMonitoringPerProband not be null", body.data);
     }
 
     private static boolean zipIsValid(final File file) {
@@ -250,6 +259,4 @@ public class ApiTest {
             }
         }
     }
-
-
 }

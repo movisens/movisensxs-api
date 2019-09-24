@@ -50,8 +50,15 @@ public interface XSService {
             throws MovisensXSException;
 
     @POST("studies/{studyId}/monitoring")
-    Call<String> sendCompliance(@Path("studyId") Integer studyId, @Body MonitoringRequest monitoringRequest) throws MovisensXSException;
+    Call<ApiResponse> sendMonitoring(@Path("studyId") Integer studyId, @Body MonitoringRequest monitoringRequest)
+            throws MovisensXSException;
 
     @GET("studies/{studyId}/monitoring")
-    Call<ResponseBody> getMonitoring(@Path("studyId") Integer studyId) throws MovisensXSException;
+    Call<ApiResponse> getMonitoring(@Path("studyId") Integer studyId)
+            throws MovisensXSException;
+
+    @GET("studies/{studyId}/monitoring/proband/{probandId}")
+    Call<ApiResponse> getMonitoringPerProband(@Path("studyId") Integer studyId,
+                                              @Path("probandId") Integer probandId, @Query("date") String date)
+            throws MovisensXSException;
 }
