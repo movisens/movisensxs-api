@@ -39,7 +39,7 @@ public class Proband {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return The currentVersion
 	 */
 	public String getCurrentVersion() {
@@ -51,7 +51,7 @@ public class Proband {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return The id
 	 */
 	public Integer getId() {
@@ -63,7 +63,7 @@ public class Proband {
 	}
 
 	/**
-	 * 
+	 *
 	 * @return The status
 	 */
 	public String getStatus() {
@@ -83,7 +83,7 @@ public class Proband {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param currentVersion
 	 *            The currentVersion
 	 */
@@ -96,7 +96,7 @@ public class Proband {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param id
 	 *            The id
 	 */
@@ -109,7 +109,7 @@ public class Proband {
 	}
 
 	/**
-	 * 
+	 *
 	 * @param status
 	 *            The status
 	 */
