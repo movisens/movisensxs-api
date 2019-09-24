@@ -1,14 +1,13 @@
 package com.movisens.xs.api;
 
-import java.util.List;
-
 import com.google.gson.JsonElement;
 import com.movisens.xs.api.exceptions.MovisensXSException;
 import com.movisens.xs.api.models.*;
-
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.*;
+
+import java.util.List;
 
 public interface XSService {
     @GET("studies/{studyId}")
