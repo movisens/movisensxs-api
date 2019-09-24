@@ -1,120 +1,80 @@
 package com.movisens.xs.api.models;
 
 import com.google.gson.annotations.Expose;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class Message {
 
 	@Expose
+	@NotNull
 	private long id;
 	@Expose
+	@NotNull
 	private String creationDate;
 	@Expose
+	@NotNull
 	private String message;
 	@Expose
+	@NotNull
 	private boolean messageRead;
 	@Expose
+	@NotNull
 	private boolean fromProband;
 	@Expose
+	@Nullable
 	private String sendingUserEmail;
 
-	/**
-	 * 
-	 * @return The id
-	 */
+	@NotNull
 	public long getId() {
 		return id;
 	}
 
-	/**
-	 * 
-	 * @param id
-	 *            The id
-	 */
 	public void setId(long id) {
 		this.id = id;
 	}
 
-	/**
-	 * 
-	 * @return The creationDate
-	 */
+	@NotNull
 	public String getCreationDate() {
 		return creationDate;
 	}
 
-	/**
-	 * 
-	 * @param creationDate
-	 *            The creationDate
-	 */
 	public void setCreationDate(String creationDate) {
 		this.creationDate = creationDate;
 	}
 
-	/**
-	 * 
-	 * @return The message
-	 */
+	@NotNull
 	public String getMessage() {
 		return message;
 	}
 
-	/**
-	 * 
-	 * @param message
-	 *            The message
-	 */
 	public void setMessage(String message) {
 		this.message = message;
 	}
 
-	/**
-	 * 
-	 * @return The messageRead
-	 */
+	@NotNull
 	public boolean isMessageRead() {
 		return messageRead;
 	}
 
-	/**
-	 * 
-	 * @param messageRead
-	 *            The messageRead
-	 */
 	public void setMessageRead(boolean messageRead) {
 		this.messageRead = messageRead;
 	}
 
-	/**
-	 * 
-	 * @return The fromProband
-	 */
+	@NotNull
 	public boolean isFromProband() {
 		return fromProband;
 	}
 
-	/**
-	 * 
-	 * @param fromProband
-	 *            The fromProband
-	 */
 	public void setFromProband(boolean fromProband) {
 		this.fromProband = fromProband;
 	}
 
-	/**
-	 * 
-	 * @return The sendingUserEmail
-	 */
+	@Nullable
 	public String getSendingUserEmail() {
 		return sendingUserEmail;
 	}
 
-	/**
-	 * 
-	 * @param sendingUserEmail
-	 *            The sendingUserEmail
-	 */
 	public void setSendingUserEmail(String sendingUserEmail) {
 		this.sendingUserEmail = sendingUserEmail;
 	}

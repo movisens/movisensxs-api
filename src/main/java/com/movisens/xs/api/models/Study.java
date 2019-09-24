@@ -1,44 +1,31 @@
 package com.movisens.xs.api.models;
 
 import com.google.gson.annotations.Expose;
+import org.jetbrains.annotations.NotNull;
 
 public class Study {
 
 	@Expose
+	@NotNull
 	private Integer id;
 	@Expose
+	@NotNull
 	private String name;
 
-	/**
-	 * 
-	 * @return The id
-	 */
+	@NotNull
 	public Integer getId() {
 		return id;
 	}
 
-	/**
-	 * 
-	 * @param id
-	 *            The id
-	 */
 	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	/**
-	 * 
-	 * @return The name
-	 */
+	@NotNull
 	public String getName() {
 		return name;
 	}
 
-	/**
-	 * 
-	 * @param name
-	 *            The name
-	 */
 	public void setName(String name) {
 		this.name = name;
 	}

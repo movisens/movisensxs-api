@@ -4,20 +4,28 @@ import java.util.Date;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class Proband {
 
 	@Expose
+	@NotNull
 	private Integer id;
 	@Expose
+	@Nullable
 	private Date startDate;
 	@Expose
+	@Nullable
 	private Date endDate;
 	@Expose
+	@Nullable
 	private String coupleURL;
 	@Expose
+	@Nullable
 	private Date coupleDate;
 	@Expose
+	@Nullable
 	private String currentVersion;
 
 	@Expose
@@ -31,42 +39,36 @@ public class Proband {
 		@SerializedName("finished") FINISHED
 	}
 
+	@Nullable
 	public Date getCoupleDate() {
 		return coupleDate;
 	}
 
+	@Nullable
 	public String getCoupleURL() {
 		return coupleURL;
 	}
 
-	/**
-	 *
-	 * @return The currentVersion
-	 */
+	@Nullable
 	public String getCurrentVersion() {
 		return currentVersion;
 	}
 
+	@Nullable
 	public Date getEndDate() {
 		return endDate;
 	}
 
-	/**
-	 *
-	 * @return The id
-	 */
+	@NotNull
 	public Integer getId() {
 		return id;
 	}
 
+	@Nullable
 	public Date getStartDate() {
 		return startDate;
 	}
 
-	/**
-	 *
-	 * @return The status
-	 */
 	public ProbandStatus getStatus() {
 		return status;
 	}
@@ -79,11 +81,6 @@ public class Proband {
 		this.coupleURL = coupleURL;
 	}
 
-	/**
-	 *
-	 * @param currentVersion
-	 *            The currentVersion
-	 */
 	public void setCurrentVersion(String currentVersion) {
 		this.currentVersion = currentVersion;
 	}
@@ -92,11 +89,6 @@ public class Proband {
 		this.endDate = endDate;
 	}
 
-	/**
-	 *
-	 * @param id
-	 *            The id
-	 */
 	public void setId(Integer id) {
 		this.id = id;
 	}
@@ -105,11 +97,6 @@ public class Proband {
 		this.startDate = startDate;
 	}
 
-	/**
-	 *
-	 * @param status
-	 *            The status
-	 */
 	public void setStatus(ProbandStatus status) {
 		this.status = status;
 	}
