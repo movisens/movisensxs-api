@@ -17,6 +17,7 @@ sourceCompatibility=1.6
 targetCompatibility=1.6
 
 group = 'com.github.movisens'
+version = '0.7.1'
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -42,4 +43,16 @@ dependencies {
     testCompile 'junit:junit:4.11'
     testCompile 'com.jayway.awaitility:awaitility:1.7.0'
     testCompile 'commons-io:commons-io:2.6'
+}
+
+task fatJar(type: Jar) {
+    manifest {
+        attributes 'Implementation-Title': 'Algorithms with all dependencies for simulation in Matlab ',
+                'Implementation-Version': version
+    }
+    baseName = project.name + '-all'
+    from {
+        configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    with jar
 }
