@@ -4,7 +4,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.movisens.xs.api.adapters.DateAdapter;
 import okhttp3.HttpUrl;
+import okhttp3.ConnectionSpec;
+import okhttp3.TlsVersion;
 import okhttp3.OkHttpClient;
+import okhttp3.CipherSuite;
 import okhttp3.logging.HttpLoggingInterceptor;
 import okhttp3.logging.HttpLoggingInterceptor.Level;
 import retrofit2.CallAdapter;
@@ -14,6 +17,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 import java.util.Date;
 import java.util.concurrent.Executor;
+import java.util.Collections;
 
 public class XSApi {
     public static class Builder {
@@ -40,7 +44,21 @@ public class XSApi {
             httpLoggingInterceptor = new HttpLoggingInterceptor();
             httpLoggingInterceptor.setLevel(Level.NONE);
 
+			ConnectionSpec spec = new ConnectionSpec.Builder(ConnectionSpec.MODERN_TLS)
+				.tlsVersions(TlsVersion.TLS_1_2)
+				.cipherSuites(					
+					CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384,
+					CipherSuite.TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256,
+					CipherSuite.TLS_DHE_RSA_WITH_AES_256_GCM_SHA384,
+					CipherSuite.TLS_DHE_RSA_WITH_AES_128_GCM_SHA256,
+					CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384,
+					CipherSuite.TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA,
+					CipherSuite.TLS_DHE_RSA_WITH_AES_256_CBC_SHA256,
+					CipherSuite.TLS_DHE_RSA_WITH_AES_256_CBC_SHA)
+				.build();
+
             OkHttpClient client = new OkHttpClient.Builder()
+					.connectionSpecs(Collections.singletonList(spec))
                     .addInterceptor(authRequestInterceptor)
                     .addInterceptor(errorInterceptor)
                     .addInterceptor(httpLoggingInterceptor)

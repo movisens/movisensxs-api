@@ -17,7 +17,7 @@ sourceCompatibility=1.6
 targetCompatibility=1.6
 
 group = 'com.github.movisens'
-version = '0.7.1'
+version = '0.7.2'
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -47,7 +47,7 @@ dependencies {
 
 task fatJar(type: Jar) {
     manifest {
-        attributes 'Implementation-Title': 'Algorithms with all dependencies for simulation in Matlab ',
+        attributes 'Implementation-Title': 'movisensxs-api for use in Matlab ',
                 'Implementation-Version': version
     }
     baseName = project.name + '-all'
