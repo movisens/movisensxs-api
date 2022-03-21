@@ -28,3 +28,4 @@ test.unisenszip
 .idea/
 /out/
 /node_modules/
+buildSrc/build/
