@@ -223,25 +223,6 @@ public class ApiTest {
         assertEquals(201, response.code());
     }
 
-    @Test
-    public void testGetMonitoring() throws AuthorizationException, IOException, MovisensXSException {
-        Response response = service.getMonitoring(STUDY_ID).execute();
-        ApiResponse body = (ApiResponse) response.body();
-        assertEquals(200, response.code());
-        assertNotNull("testGetMonitoring not be null", body.data);
-    }
-
-
-    @Test
-    public void testGetgetMonitoringPerProband() throws AuthorizationException, IOException, MovisensXSException {
-        String DATE = "2019-08-13";
-
-        Response response = service.getMonitoringPerProband(STUDY_ID, PARTICIPANT_ID, DATE).execute();
-        ApiResponse body = (ApiResponse) response.body();
-        assertEquals(200, response.code());
-        assertNotNull("testGetgetMonitoringPerProband not be null", body.data);
-    }
-
     private static boolean zipIsValid(final File file) {
         ZipFile zipfile = null;
         try {
