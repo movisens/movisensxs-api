@@ -14,7 +14,7 @@ plugins {
     id("java")
     id("eclipse")
     id("idea")
-    id("maven")
+    id("maven-publish")
 }
 
 java {
@@ -37,22 +37,21 @@ repositories {
     // You can declare any Maven/Ivy/file repository here.
     mavenCentral()
     jcenter()
-    maven(url = "http://oss.sonatype.org/content/repositories/snapshots")
 }
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
     // The production code
-    compile("com.squareup.retrofit2:retrofit:2.6.0")
-    compile("com.squareup.retrofit2:converter-gson:2.6.0")
-    compile("com.squareup.okhttp3:logging-interceptor:3.4.1")
+    implementation("com.squareup.retrofit2:retrofit:2.6.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.6.0")
+    implementation("com.squareup.okhttp3:logging-interceptor:3.4.1")
     compileOnly("org.jetbrains:annotations:17.0.0")
 
     // Declare the dependency for your favourite test framework you want to use in your tests.
     // TestNG is also supported by the Gradle Test task. Just change the
     // testCompile dependency to testCompile 'org.testng:testng:6.8.1' and add
     // "test.useTestNG()' to your build script.
-    testCompile("junit:junit:4.11")
-    testCompile("com.jayway.awaitility:awaitility:1.7.0")
-    testCompile("commons-io:commons-io:2.6")
+    testImplementation("junit:junit:4.11")
+    testImplementation("com.jayway.awaitility:awaitility:1.7.0")
+    testImplementation("commons-io:commons-io:2.6")
 }
