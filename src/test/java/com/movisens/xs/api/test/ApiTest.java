@@ -102,7 +102,7 @@ public class ApiTest {
             }
         });
         assertEquals("getProbands should return 3 result", 3, asyncProbands.size());
-        assertEquals("getProbands user 2 should have status 'unknown'", "unknown", asyncProbands.get(1).getStatus());
+        assertEquals("getProbands user 2 should have status 'unknown'", Proband.ProbandStatus.UNKNOWN, asyncProbands.get(1).getStatus());
     }
 
     @Test
@@ -211,7 +211,7 @@ public class ApiTest {
 
         MonitoringAlert monitoringAlert1 = new MonitoringAlert(2, "2019-08-13",
                 "Stress episode",
-                "<h2>There has been a stress episode detected</h2>", true);
+                "<h2>There has been a stress episode detected</h2>", true, false);
 
         MonitoringRequest monitoringRequest = new MonitoringRequest();
         monitoringRequest.add(monitoringCompliance1);
