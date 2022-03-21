@@ -1,0 +1,12 @@
+{
+  "name": "movisensxs-api",
+  "version": "0.7.1",
+  "devDependencies": {
+    "standard-version": "^9.3.2"
+  },
+  "scripts": {
+    "release": "standard-version",
+    "preinstall": "git config core.hooksPath .githooks"
+  },
+  "standard-version": {}
+}

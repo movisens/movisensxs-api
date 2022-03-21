@@ -27,3 +27,4 @@ test.unisenszip
 *.ipr
 .idea/
 /out/
+/node_modules/
