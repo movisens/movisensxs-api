@@ -21,7 +21,6 @@ hs_err_pid*
 /.classpath
 /.project
 .settings/
-test.unisenszip
 *.iml
 *.iws
 *.ipr

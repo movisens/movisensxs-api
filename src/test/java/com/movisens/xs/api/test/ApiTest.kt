@@ -11,7 +11,9 @@ import com.movisens.xs.api.models.*
 import okhttp3.logging.HttpLoggingInterceptor
 import org.apache.commons.io.FileUtils
 import org.junit.Assert
+import org.junit.Rule
 import org.junit.Test
+import org.junit.rules.TemporaryFolder
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -27,10 +29,17 @@ import java.util.zip.ZipFile
  * @author Juergen, @date 22.06.14 22:50
  */
 class ApiTest {
-    var service =
-        XSApi.Builder(API_KEY).setServer(SERVER_URL).setLogLevel(HttpLoggingInterceptor.Level.BASIC).build().create(
-            XSService::class.java
-        )
+    private val service =
+        XSApi.Builder(API_KEY)
+            .setServer(SERVER_URL)
+            .setLogLevel(HttpLoggingInterceptor.Level.BASIC)
+            .build()
+            .create(XSService::class.java)
+    private val asyncProbands: MutableList<Proband> = mutableListOf()
+    private val asyncResults: MutableList<Result> = mutableListOf()
+
+    @get:Rule
+    val folder = TemporaryFolder()
 
     @Test
     @Throws(AuthorizationException::class, IOException::class, MovisensXSException::class)
@@ -86,27 +95,25 @@ class ApiTest {
         )
     }
 
-    private var asyncProbands: List<Proband>? = null
-
     @Test
     @Throws(MovisensXSException::class)
     fun testGetProbandsAsync() {
         val call = service.getProbands(STUDY_ID)
-        call.enqueue(object : Callback<List<Proband>?> {
-            override fun onResponse(call: Call<List<Proband>?>, response: Response<List<Proband>?>) {
-                asyncProbands = response.body()
+        call.enqueue(object : Callback<List<Proband>> {
+            override fun onResponse(call: Call<List<Proband>>, response: Response<List<Proband>>) {
+                asyncProbands.addAll(response.body()!!.toList())
             }
 
             override fun onFailure(call: Call<List<Proband>?>, t: Throwable) {
                 Assert.fail("Error receiving probands: " + t.message)
             }
         })
-        Awaitility.await().atMost(5, TimeUnit.SECONDS).until<Any> { asyncProbands != null }
-        Assert.assertEquals("getProbands should return 3 result", 7, asyncProbands!!.size.toLong())
+        Awaitility.await().atMost(5, TimeUnit.SECONDS).until<Any> { asyncProbands.size > 0 }
+        Assert.assertEquals("getProbands should return 3 result", 7, asyncProbands.size.toLong())
         Assert.assertEquals(
             "getProbands user 2 should have status 'unknown'",
             Proband.ProbandStatus.UNKNOWN,
-            asyncProbands!![1].status
+            asyncProbands[1].status
         )
     }
 
@@ -141,23 +148,21 @@ class ApiTest {
         )
     }
 
-    private var asyncResults: List<Result?>? = null
-
     @Test
     @Throws(MovisensXSException::class)
     fun testGetResultsAsync() {
         val call = service.getResults(STUDY_ID)
         call.enqueue(object : Callback<List<Result>> {
             override fun onResponse(call: Call<List<Result>>, response: Response<List<Result>>) {
-                asyncResults = response.body()
+                asyncResults.addAll(response.body()!!.toList())
             }
 
             override fun onFailure(call: Call<List<Result>>, t: Throwable) {
                 Assert.fail("Error receiving results: " + t.message)
             }
         })
-        Awaitility.await().atMost(5, TimeUnit.SECONDS).until<Any> { asyncResults != null }
-        Assert.assertEquals("getResults should return 2 results", 2, asyncResults!!.size.toLong())
+        Awaitility.await().atMost(5, TimeUnit.SECONDS).until<Any> { asyncResults.size > 0 }
+        Assert.assertEquals("getResults should return 2 results", 2, asyncResults.size.toLong())
     }
 
     @Test
@@ -165,9 +170,11 @@ class ApiTest {
     fun testGetResultsAsXlsx() {
         val xlsxStream = service.getResultsAsXLSX(STUDY_ID, PARTICIPANT_ID).execute().body()!!
             .byteStream()
-        val targetFile = File("participant" + PARTICIPANT_ID + "Results.xlsx")
+        val targetFile = folder.newFile("participant" + PARTICIPANT_ID + "Results.xlsx")
+        Assert.assertEquals(0L, targetFile.length())
         FileUtils.copyInputStreamToFile(xlsxStream, targetFile)
         xlsxStream.close()
+        Assert.assertTrue(targetFile.length() > 0L)
         Assert.assertEquals("XLSX file should be valid zip ;-)", zipIsValid(targetFile), true)
     }
 
@@ -176,9 +183,11 @@ class ApiTest {
     fun testGetAllResultsAsXlsx() {
         val xlsxStream = service.getResultsAsXLSX(STUDY_ID, PARTICIPANT_ID).execute().body()!!
             .byteStream()
-        val targetFile = File("allResults.xlsx")
+        val targetFile = folder.newFile("allResults.xlsx")
+        Assert.assertEquals(0L, targetFile.length())
         FileUtils.copyInputStreamToFile(xlsxStream, targetFile)
         xlsxStream.close()
+        Assert.assertTrue(targetFile.length() > 0L)
         Assert.assertEquals("XLSX file should be valid zip ;-)", zipIsValid(targetFile), true)
     }
 
@@ -187,9 +196,11 @@ class ApiTest {
     fun testGetMobileSensingResultsAsUnisens() {
         val unisensZipStream = service.getMobileSensingAsUnisensZip(STUDY_ID, PARTICIPANT_ID).execute().body()!!
             .byteStream()
-        val targetFile = File("test.unisenszip")
+        val targetFile = folder.newFile("test.unisenszip")
+        Assert.assertEquals(0L, targetFile.length())
         FileUtils.copyInputStreamToFile(unisensZipStream, targetFile)
         unisensZipStream.close()
+        Assert.assertTrue(targetFile.length() > 0L)
         Assert.assertEquals("Unisens file should be valid", zipIsValid(targetFile), true)
     }
 
