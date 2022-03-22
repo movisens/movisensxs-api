@@ -147,12 +147,12 @@ class ApiTest {
     @Throws(MovisensXSException::class)
     fun testGetResultsAsync() {
         val call = service.getResults(STUDY_ID)
-        call.enqueue(object : Callback<List<Result?>?> {
-            override fun onResponse(call: Call<List<Result?>?>, response: Response<List<Result?>?>) {
+        call.enqueue(object : Callback<List<Result>> {
+            override fun onResponse(call: Call<List<Result>>, response: Response<List<Result>>) {
                 asyncResults = response.body()
             }
 
-            override fun onFailure(call: Call<List<Result?>?>, t: Throwable) {
+            override fun onFailure(call: Call<List<Result>>, t: Throwable) {
                 Assert.fail("Error receiving results: " + t.message)
             }
         })
