@@ -56,6 +56,7 @@ dependencies {
     testImplementation("junit:junit:4.11")
     testImplementation("com.jayway.awaitility:awaitility:1.7.0")
     testImplementation("commons-io:commons-io:2.6")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0")
     implementation(kotlin("stdlib-jdk8"))
 }
 val compileKotlin: KotlinCompile by tasks
