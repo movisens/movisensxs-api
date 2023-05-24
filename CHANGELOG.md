@@ -2,6 +2,25 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [0.8.0](https://github.com/movisens/movisensxs-api/compare/v0.7.1...v0.8.0) (2023-05-24)
+
+
+### Features
+
+* added kotlin and buildSrc versioning ([fadebac](https://github.com/movisens/movisensxs-api/commit/fadebac135df66491da9ef032e75c723acc00934))
+* added standard notes and converted gradle files to kotlin ([4d46d26](https://github.com/movisens/movisensxs-api/commit/4d46d26ca9bb6d304dd4b5d7e3c6a6b0815e230e))
+* **kotlin-conversion:** converted high level retrofit classes ([6ef8f0b](https://github.com/movisens/movisensxs-api/commit/6ef8f0b3ef7139f8a33fdb38c59ae91448fa8875))
+* **kotlin-conversion:** converted tests and subpackages to kotlin ([e84c444](https://github.com/movisens/movisensxs-api/commit/e84c444ebfdb350e0bd0043d84f1a8dba9865792))
+* **kotlin-conversion:** fixed tests to not create files in root, instead use temporary folder rule ([63e75b8](https://github.com/movisens/movisensxs-api/commit/63e75b8fbd5e45fed1ae910b7361c9961eb814be))
+* **kotlin-conversion:** upgraded retrofit version and added coroutine test ([214b27a](https://github.com/movisens/movisensxs-api/commit/214b27ab7e51b9c798d2e834638619b6b10a9d18))
+* upgraded gradle version ([3b8259e](https://github.com/movisens/movisensxs-api/commit/3b8259e7db576ad29a81a460f25409b0cee8c365))
+
+
+### Bug Fixes
+
+* add config to remove tag prefix ([cd46911](https://github.com/movisens/movisensxs-api/commit/cd469114a4aeb7df232aa7266f9ba1c6c352c953))
+* deleted not usable routes ([5d950fa](https://github.com/movisens/movisensxs-api/commit/5d950fa3e7b2c4896b0ec7b8928c86fa896112b7))
+
 ### 0.7.1 (2022-03-21)
 
 
