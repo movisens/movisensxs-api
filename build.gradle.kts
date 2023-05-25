@@ -16,15 +16,14 @@ plugins {
     id("eclipse")
     id("idea")
     id("maven-publish")
-    kotlin("jvm") version Versions.kotlinVersion
+    @Suppress("DSL_SCOPE_VIOLATION")
+    kotlin("jvm") version libs.versions.kotlin.get()
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_6
-    targetCompatibility = JavaVersion.VERSION_1_6
-}
 group = "com.github.movisens"
+
 val packageJsonVersionRegex = Pattern.compile("\"version\":").toRegex()
+
 version = rootProject.file("package.json")
     .bufferedReader()
     .readLines()
@@ -35,37 +34,30 @@ version = rootProject.file("package.json")
 
 // In this section you declare where to find the dependencies of your project
 repositories {
-    // Use 'maven central' for resolving your dependencies.
-    // You can declare any Maven/Ivy/file repository here.
     mavenCentral()
-    jcenter()
 }
 
 // In this section you declare the dependencies for your production and test code
 dependencies {
     // The production code
-    implementation("com.squareup.retrofit2:retrofit:${Versions.retrofitVersion}")
-    implementation("com.squareup.retrofit2:converter-gson:${Versions.retrofitVersion}")
-    implementation("com.squareup.okhttp3:logging-interceptor:3.4.1")
-    compileOnly("org.jetbrains:annotations:17.0.0")
+    implementation(libs.kotlin.stdlib.jdk8)
+    implementation(libs.bundles.retrofit)
+    implementation(libs.okhttp.logging.interceptor)
+    compileOnly(libs.jetbrains.annotations)
 
-    // Declare the dependency for your favourite test framework you want to use in your tests.
-    // TestNG is also supported by the Gradle Test task. Just change the
-    // testCompile dependency to testCompile 'org.testng:testng:6.8.1' and add
-    // "test.useTestNG()' to your build script.
-    testImplementation("junit:junit:4.11")
-    testImplementation("com.jayway.awaitility:awaitility:1.7.0")
-    testImplementation("commons-io:commons-io:2.6")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0")
-    implementation(kotlin("stdlib-jdk8"))
+    testImplementation(libs.bundles.test)
 }
 val compileKotlin: KotlinCompile by tasks
 compileKotlin.kotlinOptions {
-    jvmTarget = "1.6"
+    jvmTarget = libs.versions.jvm.get()
 }
 val compileTestKotlin: KotlinCompile by tasks
 compileTestKotlin.kotlinOptions {
-    jvmTarget = "1.6"
+    jvmTarget = libs.versions.jvm.get()
+}
+java {
+    sourceCompatibility = JavaVersion.toVersion(libs.versions.jvm.get())
+    targetCompatibility = JavaVersion.toVersion(libs.versions.jvm.get())
 }
 
 publishing {

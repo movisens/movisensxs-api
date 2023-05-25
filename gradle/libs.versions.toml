@@ -1,0 +1,26 @@
+[versions]
+kotlin = "1.6.10"
+retrofit = "2.9.0"
+okhttp = "3.4.1"
+jetbrains-annotation = "17.0.0"
+junit = "4.11"
+awaitility = "1.7.0"
+commons-io = "2.6"
+kotlinx-coroutines = "1.6.0"
+jvm = "1.6"
+
+[libraries]
+retrofit-base = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
+retrofit-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "retrofit" }
+okhttp-logging-interceptor = { module = "com.squareup.okhttp3:logging-interceptor", version.ref = "okhttp" }
+jetbrains-annotations = { module = "org.jetbrains:annotations", version.ref = "jetbrains-annotation" }
+kotlin-stdlib-jdk8 = { module = "org.jetbrains.kotlin:kotlin-stdlib-jdk8", version.ref = "kotlin" }
+
+test-junit = { module = "org.jetbrains:annotations", version.ref = "junit" }
+test-awaitility = { module = "com.jayway.awaitility:awaitility", version.ref = "awaitility" }
+test-commons-io = { module = "commons-io:commons-io", version.ref = "commons-io" }
+test-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kotlinx-coroutines" }
+
+[bundles]
+retrofit = ["retrofit-base", "retrofit-gson"]
+test = ["test-junit", "test-awaitility", "test-commons-io", "test-coroutines"]
