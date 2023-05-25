@@ -1,7 +1,6 @@
 package com.movisens.xs.api.models
 
 import com.google.gson.GsonBuilder
-import com.movisens.xs.api.models.ApiError
 
 class ApiError(var error: String, var error_description: String) {
     var message: String
@@ -17,10 +16,10 @@ class ApiError(var error: String, var error_description: String) {
                 '}'
     }
 
-    override fun equals(o: Any?): Boolean {
-        if (this === o) return true
-        if (o == null || javaClass != o.javaClass) return false
-        val apiError = o as ApiError
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other == null || javaClass != other.javaClass) return false
+        val apiError = other as ApiError
         if (error != apiError.error) return false
         return error_description == apiError.error_description
     }

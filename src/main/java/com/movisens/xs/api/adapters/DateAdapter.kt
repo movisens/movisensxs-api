@@ -61,6 +61,7 @@ class DateAdapter : TypeAdapter<Date?>() {
         val FACTORY: TypeAdapterFactory = object : TypeAdapterFactory {
             // we use a runtime check to make sure the 'T's equal
             override fun <T> create(gson: Gson, typeToken: TypeToken<T>): TypeAdapter<T>? {
+                @Suppress("UNCHECKED_CAST")
                 return if (typeToken.rawType == Date::class.java) (DateAdapter() as TypeAdapter<T>) else null
             }
         }

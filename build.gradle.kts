@@ -1,4 +1,5 @@
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.util.regex.Pattern
 
@@ -12,7 +13,6 @@ import java.util.regex.Pattern
  */
 
 // Apply the java plugin to add support for Java
-@Suppress("DSL_SCOPE_VIOLATION", "UnstableApiUsage")
 plugins {
     id("java")
     id("maven-publish")
@@ -43,18 +43,11 @@ dependencies {
     implementation(libs.kotlin.stdlib.jdk8)
     implementation(libs.bundles.retrofit)
     implementation(libs.okhttp.logging.interceptor)
-    compileOnly(libs.jetbrains.annotations)
 
     testImplementation(libs.bundles.test)
 }
-val compileKotlin: KotlinCompile by tasks
-compileKotlin.kotlinOptions {
-    jvmTarget = libs.versions.jvm.get()
-}
-val compileTestKotlin: KotlinCompile by tasks
-compileTestKotlin.kotlinOptions {
-    jvmTarget = libs.versions.jvm.get()
-}
+tasks.withType(KotlinCompile::class.java)
+    .configureEach { compilerOptions.jvmTarget.set(JvmTarget.fromTarget(libs.versions.jvm.get())) }
 java {
     sourceCompatibility = JavaVersion.toVersion(libs.versions.jvm.get())
     targetCompatibility = JavaVersion.toVersion(libs.versions.jvm.get())
@@ -75,7 +68,7 @@ tasks.withType<DependencyUpdatesTask> {
 }
 
 fun isNonStable(version: String): Boolean {
-    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.uppercase().contains(it) }
     val regex = "^[0-9,.v-]+$".toRegex()
     val isStable = stableKeyword || regex.matches(version)
     return isStable.not()
