@@ -1,5 +1,5 @@
 [versions]
-kotlin = "1.6.10"
+kotlin = "1.8.20"
 retrofit = "2.9.0"
 okhttp = "3.4.1"
 jetbrains-annotation = "17.0.0"
@@ -7,7 +7,7 @@ junit = "4.11"
 awaitility = "1.7.0"
 commons-io = "2.6"
 kotlinx-coroutines = "1.6.0"
-jvm = "1.6"
+jvm = "1.8"
 
 [libraries]
 retrofit-base = { module = "com.squareup.retrofit2:retrofit", version.ref = "retrofit" }
@@ -24,3 +24,7 @@ test-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", ve
 [bundles]
 retrofit = ["retrofit-base", "retrofit-gson"]
 test = ["test-junit", "test-awaitility", "test-commons-io", "test-coroutines"]
+
+[plugins]
+versions = { id = "com.github.ben-manes.versions", version = "0.46.0" }
+kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin"}

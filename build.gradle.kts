@@ -1,3 +1,4 @@
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import java.util.regex.Pattern
 
@@ -11,13 +12,12 @@ import java.util.regex.Pattern
  */
 
 // Apply the java plugin to add support for Java
+@Suppress("DSL_SCOPE_VIOLATION", "UnstableApiUsage")
 plugins {
     id("java")
-    id("eclipse")
-    id("idea")
     id("maven-publish")
-    @Suppress("DSL_SCOPE_VIOLATION")
-    kotlin("jvm") version libs.versions.kotlin.get()
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.versions)
 }
 
 group = "com.github.movisens"
@@ -66,5 +66,18 @@ publishing {
             from(components["java"])
         }
     }
+}
+
+tasks.withType<DependencyUpdatesTask> {
+    rejectVersionIf {
+        isNonStable(candidate.version)
+    }
+}
+
+fun isNonStable(version: String): Boolean {
+    val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.toUpperCase().contains(it) }
+    val regex = "^[0-9,.v-]+$".toRegex()
+    val isStable = stableKeyword || regex.matches(version)
+    return isStable.not()
 }
 
