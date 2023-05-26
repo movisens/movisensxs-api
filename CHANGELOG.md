@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.1](https://github.com/movisens/movisensxs-api/compare/0.8.0...0.8.1) (2023-05-26)
+
+
+### Features
+
+* added plugins to toml, added versions plugin, updated to newest release kotlin ([5ebd234](https://github.com/movisens/movisensxs-api/commit/5ebd234d3e620ad72c5e0f476c63a72cbc44a705))
+* added sendPushNotification end point ([0144bfc](https://github.com/movisens/movisensxs-api/commit/0144bfc0388ce4712e3bd645d0411e3c5b9015c8))
+* migrated to version cataloges ([c381b59](https://github.com/movisens/movisensxs-api/commit/c381b59b383c384bfb9e44c761c71fafe3c7993b))
+
+
+### Bug Fixes
+
+* deleted code from api response, because will never be sent, is equivalent to status ([00c20e7](https://github.com/movisens/movisensxs-api/commit/00c20e7f970ad7edf9f596776789f170292f2c23))
+* maven publishing ([0dfc07c](https://github.com/movisens/movisensxs-api/commit/0dfc07c1c6025ed8bdccd4b0257acf23be59ec31))
+* updated all dependencies, fixed warnings ([3be4a86](https://github.com/movisens/movisensxs-api/commit/3be4a8600ce9128c921ffcf9b01e4002a0f08987))
+
 ## [0.8.0](https://github.com/movisens/movisensxs-api/compare/v0.7.1...v0.8.0) (2023-05-24)
 
 
