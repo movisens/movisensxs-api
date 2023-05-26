@@ -1,3 +1,3 @@
 package com.movisens.xs.api.models
 
-data class ApiResponse(val code: Int, val status: String, val message: String, val data: Any)
+data class ApiResponse(val status: Int, val message: String, val data: Any)
