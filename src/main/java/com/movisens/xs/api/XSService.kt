@@ -82,4 +82,11 @@ interface XSService {
         @Path("studyId") studyId: Int,
         @Body monitoringRequest: MonitoringRequest
     ): Call<ApiResponse>
+
+    @POST("studies/{studyId}/probands/{probandId}/sendPushNotification")
+    @Throws(MovisensXSException::class)
+    fun sendPushNotification(
+        @Path("studyId") studyId: Int,
+        @Path("probandId") probandId: Int,
+    ): Call<ApiResponse>
 }
