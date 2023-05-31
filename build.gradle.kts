@@ -41,8 +41,8 @@ repositories {
 dependencies {
     // The production code
     implementation(libs.kotlin.stdlib.jdk8)
-    implementation(libs.bundles.retrofit)
-    implementation(libs.okhttp.logging.interceptor)
+    api(libs.bundles.retrofit)
+    api(libs.okhttp.logging.interceptor)
 
     testImplementation(libs.bundles.test)
 }
