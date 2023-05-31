@@ -14,7 +14,7 @@ class ErrorInterceptor : Interceptor {
     @Throws(IOException::class)
     override fun intercept(chain: Interceptor.Chain): Response {
         val response = chain.proceed(chain.request())
-        return when (response.code) {
+        return when (response.code()) {
             200, 201 -> response
             401, 403 -> throw AuthorizationException(getApiError(response))
             404 -> throw NotFoundException(ApiError(404.toString(), "Resource not found"))
@@ -25,8 +25,8 @@ class ErrorInterceptor : Interceptor {
 
     @Throws(IOException::class)
     private fun getApiError(response: Response): ApiError? {
-        return if (response.body != null) {
-            parse(response.body!!.string())
+        return if (response.body() != null) {
+            parse(response.body()!!.string())
         } else null
     }
 }

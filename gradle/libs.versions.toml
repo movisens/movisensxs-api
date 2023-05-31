@@ -1,7 +1,7 @@
 [versions]
 kotlin = "1.8.21"
 retrofit = "2.9.0"
-okhttp = "4.11.0"
+okhttp = "3.14.9"
 junit = "4.13.2"
 awaitility = "1.7.0"
 commons-io = "2.12.0"
