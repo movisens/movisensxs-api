@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [0.8.2](https://github.com/movisens/movisensxs-api/compare/0.8.1...0.8.2) (2023-11-30)
+
+
+### Bug Fixes
+
+* added coroutine test ([8d4f446](https://github.com/movisens/movisensxs-api/commit/8d4f446ee3c69eafb18bae9f51ec3a8df8e7f6f9))
+* deactivated tests which depend on coupled device and existing device token, which may be invalid after some time, added todo, should be fixed with other tests ([7a4899c](https://github.com/movisens/movisensxs-api/commit/7a4899c9de25266f15dd673f6883b169842f5b45))
+* fixed version mismatch between retrofit and okhttp ([b6c6743](https://github.com/movisens/movisensxs-api/commit/b6c674369b1c453d973c77ac9ede4c2e769fdb1a))
+* transitive dependencies ([c175bba](https://github.com/movisens/movisensxs-api/commit/c175bba587c0a2cb9845a5f527414ec9562d6027))
+* updated README with kotlin examples ([7d9c31a](https://github.com/movisens/movisensxs-api/commit/7d9c31ae443e92664d17de721766d2c55a627af6))
+* upgraded dependencies ([5ac3c5a](https://github.com/movisens/movisensxs-api/commit/5ac3c5a16c1f779142ed949d72165b0bb5cbc404))
+
 ### [0.8.1](https://github.com/movisens/movisensxs-api/compare/0.8.0...0.8.1) (2023-05-26)
 
 
