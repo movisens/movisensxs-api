@@ -1,11 +1,11 @@
 [versions]
-kotlin = "1.8.21"
+kotlin = "1.9.21"
 retrofit = "2.9.0"
 okhttp = "3.14.9"
 junit = "4.13.2"
 awaitility = "1.7.0"
-commons-io = "2.12.0"
-kotlinx-coroutines = "1.7.1"
+commons-io = "2.15.1"
+kotlinx-coroutines = "1.7.3"
 jvm = "1.8"
 
 [libraries]
@@ -24,5 +24,5 @@ retrofit = ["retrofit-base", "retrofit-gson"]
 test = ["test-junit", "test-awaitility", "test-commons-io", "test-coroutines"]
 
 [plugins]
-versions = { id = "com.github.ben-manes.versions", version = "0.46.0" }
+versions = { id = "com.github.ben-manes.versions", version = "0.50.0" }
 kotlin = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin"}
