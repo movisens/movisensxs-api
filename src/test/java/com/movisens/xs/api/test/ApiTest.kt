@@ -8,6 +8,7 @@ import com.movisens.xs.api.XSService
 import com.movisens.xs.api.exceptions.AuthorizationException
 import com.movisens.xs.api.exceptions.MovisensXSException
 import com.movisens.xs.api.models.*
+import kotlinx.coroutines.test.runTest
 import okhttp3.logging.HttpLoggingInterceptor
 import org.apache.commons.io.FileUtils
 import org.junit.Assert
@@ -17,6 +18,7 @@ import org.junit.rules.TemporaryFolder
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.await
 import java.io.File
 import java.io.IOException
 import java.util.concurrent.TimeUnit
@@ -100,8 +102,20 @@ class ApiTest {
 
     @Test
     @Throws(AuthorizationException::class, IOException::class, MovisensXSException::class)
-    fun testGetProbands() {
+    fun testGetProbandsSynchronous() {
         val probands = service.getProbands(STUDY_ID).execute().body()!!
+        Assert.assertEquals("getProbands should return 3 result", 7, probands.size.toLong())
+        Assert.assertEquals(
+            "getProbands user 3 should have status 'unknown'",
+            Proband.ProbandStatus.UNKNOWN,
+            probands[2].status
+        )
+    }
+
+    @Test
+    @Throws(AuthorizationException::class, IOException::class, MovisensXSException::class)
+    fun testGetProbandsCoRoutines() = runTest {
+        val probands = service.getProbands(STUDY_ID).await()
         Assert.assertEquals("getProbands should return 3 result", 7, probands.size.toLong())
         Assert.assertEquals(
             "getProbands user 3 should have status 'unknown'",
