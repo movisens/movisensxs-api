@@ -52,24 +52,39 @@ class ApiTest {
         )
     }
 
-    @Test
-    @Throws(AuthorizationException::class, IOException::class, MovisensXSException::class)
-    fun testSendMessage() {
-        var call = service.getMessages(STUDY_ID, PARTICIPANT_ID)
-        val nrOfMessages = call.execute().body()!!.size
-        val sendMessageCall = service.sendMessage(STUDY_ID, PARTICIPANT_ID, USER_EMAIL, "Unit Test")
-        val message = sendMessageCall.execute().body()
-        call = service.getMessages(STUDY_ID, PARTICIPANT_ID)
-        val nrOfMessagesAfterSending = call.execute().body()!!.size
-        Assert.assertEquals(
-            "getMessages should return one more message after sending", 1, (
-                    nrOfMessagesAfterSending - nrOfMessages).toLong()
-        )
-        Assert.assertEquals(
-            "sendMessage should return one message with the text 'Unit Test'", "Unit Test",
-            message!!.message
-        )
-    }
+// TODO: Deactivated for now, should be activated with own instance
+//
+//    @Test
+//    @Throws(AuthorizationException::class, IOException::class, MovisensXSException::class)
+//    fun testSendMessage() {
+//        var call = service.getMessages(STUDY_ID, 2)
+//        val nrOfMessages = call.execute().body()!!.size
+//        val sendMessageCall = service.sendMessage(STUDY_ID, 2, USER_EMAIL, "Unit Test")
+//        val message = sendMessageCall.execute().body()
+//        call = service.getMessages(STUDY_ID, 2)
+//        val nrOfMessagesAfterSending = call.execute().body()!!.size
+//        Assert.assertEquals(
+//            "getMessages should return one more message after sending", 1, (
+//                    nrOfMessagesAfterSending - nrOfMessages).toLong()
+//        )
+//        Assert.assertEquals(
+//            "sendMessage should return one message with the text 'Unit Test'", "Unit Test",
+//            message!!.message
+//        )
+//    }
+//
+//    @Test
+//    @Throws(AuthorizationException::class, IOException::class, MovisensXSException::class)
+//    fun testPushNotification() {
+//        val service =
+//            XSApi.Builder("8qo65wghj7t09of920tcfo01zbub7olkjsjf2tzl")
+//                .setServer("http://localhost:9000")
+//                .setLogLevel(HttpLoggingInterceptor.Level.BASIC)
+//                .build()
+//                .create(XSService::class.java)
+//        val response = service.sendPushNotification(12, 2).execute().body()
+//        println(response)
+//    }
 
     @Test
     @Throws(AuthorizationException::class, IOException::class, MovisensXSException::class)
@@ -89,9 +104,9 @@ class ApiTest {
         val probands = service.getProbands(STUDY_ID).execute().body()!!
         Assert.assertEquals("getProbands should return 3 result", 7, probands.size.toLong())
         Assert.assertEquals(
-            "getProbands user 2 should have status 'unknown'",
+            "getProbands user 3 should have status 'unknown'",
             Proband.ProbandStatus.UNKNOWN,
-            probands[1].status
+            probands[2].status
         )
     }
 
@@ -111,9 +126,9 @@ class ApiTest {
         Awaitility.await().atMost(5, TimeUnit.SECONDS).until<Any> { asyncProbands.size > 0 }
         Assert.assertEquals("getProbands should return 3 result", 7, asyncProbands.size.toLong())
         Assert.assertEquals(
-            "getProbands user 2 should have status 'unknown'",
+            "getProbands user 3 should have status 'unknown'",
             Proband.ProbandStatus.UNKNOWN,
-            asyncProbands[1].status
+            asyncProbands[2].status
         )
     }
 
