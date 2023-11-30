@@ -17,7 +17,7 @@ repositories {
     maven { url "https://jitpack.io" }
 }
 dependencies {
-    compile 'com.github.movisens:movisensxs-api:0.6'
+    compile 'com.github.movisens:movisensxs-api:0.8.2'
 }
 ```
 #### Maven ####
@@ -29,10 +29,11 @@ dependencies {
 <dependency>
     <groupId>com.github.movisens</groupId>
     <artifactId>movisensxs-api</artifactId>
-    <version>0.6</version>
+    <version>0.8.2</version>
 </dependency>
 ```
 ### Example Usage ###
+#### Java
 ```java
 
 // Create movisensXS Service
@@ -57,6 +58,23 @@ call.enqueue(new Callback<List<Proband>>() {
 	}
 });
 ```
+
+#### Kotlin
+```kotlin
+
+// Create movisensXS Service
+val SERVER_URL = "https://xs.movisens.com";
+val API_KEY = "API KEY HERE";
+
+private val service = XSApi.Builder(API_KEY)
+        .setServer(SERVER_URL)
+        .build()
+        .create(XSService::class.java)
+
+// Call API via coroutine
+val probands = service.getProbands(STUDY_ID).await()
+```
+
 
 ### Error handling ###
 
